@@ -57,3 +57,70 @@ def index(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+
+def custom_query(query):
+    # Perform the custom query
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        results = cursor.fetchall()
+        rows_as_dict = []
+        for row in results:
+            row_dict = dict(zip(columns, row))
+            rows_as_dict.append(row_dict)
+        return rows_as_dict
+
+
+def shareholder(request):
+    myquery = """
+                SELECT PS.*, PSSS.shareNumber 
+                FROM shareholder_shareholder AS PS
+                LEFT JOIN shareholder_shareholdersetting AS PSSS ON PS.id = PSSS.shareholder_id
+            """
+    mydata = custom_query(myquery)
+    template = loader.get_template("shareholder.html")
+    context = {
+        "myList": mydata,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def sMonthlyPaid(request):
+    myquery = """
+                SELECT S.userName, S.mobile, SS.shareNumber, SI.InstallmentAmount, SI.InstallmentDate, SS.id
+                FROM shareholder_shareholder AS S
+                LEFT JOIN shareholder_shareholdersetting AS SS ON S.id = SS.shareholder_id
+                LEFT JOIN shareholder_shareholderinstallment AS SI ON S.id = SI.shareholder_id
+                    WHERE MONTH(SI.InstallmentDate) = MONTH(CURDATE())
+                        AND YEAR(SI.InstallmentDate) = YEAR(CURDATE());
+            """
+    mydata = custom_query(myquery)
+    getStudentList = ShareHolder.objects.values_list("userName", flat=True)
+    column_list = list(getStudentList)
+
+    template = loader.get_template("sMonthlyPaid.html")
+    context = {
+        "myList": mydata,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def sMonthlyUnPaid(request):
+    myquery = """
+                SELECT S.* 
+                FROM shareholder_shareholder AS S
+                WHERE ID NOT IN (
+                    SELECT SI.shareholder_id
+                    FROM shareholder_shareholderinstallment AS SI
+                        WHERE MONTH(SI.InstallmentDate) = MONTH(CURDATE())
+                            AND YEAR(SI.InstallmentDate) = YEAR(CURDATE())
+                    )
+            """
+    mydata = custom_query(myquery)
+
+    template = loader.get_template("sMonthlyUnPaid.html")
+    context = {
+        "myList": mydata,
+    }
+    return HttpResponse(template.render(context, request))
