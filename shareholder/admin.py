@@ -13,7 +13,7 @@ class ShareHolderAdmin(admin.ModelAdmin):
         ("userName", "password"),
         ("firstName", "lastName"),
         ("mobile", "isMember"),
-        ("address", "photo"),
+        ("address", "profilePic"),
     ]
     list_display = ("userName", "firstName", "mobile")
 
