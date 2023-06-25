@@ -38,6 +38,7 @@ class ShareHolderAdmin(admin.ModelAdmin):
                 return messages.error(
                     request, "The user name is already taken please choose another"
                 )
+            obj.CreatedBy = request.user.id
             obj.save()
 
 
