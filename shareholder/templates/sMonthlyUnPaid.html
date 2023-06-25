@@ -15,15 +15,22 @@
                         <tr>
                             <th>User Name</th>
                             <th>Mobile</th>
-                            <th>Over Due</th>
+                            <th>Paid Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% now "Y-m-d" as current_datetime %}
+                        {% now "Y-m" as current_datemonth %}
+
                         {% for stu in myList %}
                             <tr>
                                 <td>{{stu.userName}}</td>
                                 <td>{{stu.mobile}}</td>
-                                <td>{{stu.mobile}}</td>
+                                {% if current_datetime > current_datemonth|add:"-10" %}
+                                    <td><span style="color:red">Over Due</span></td>
+                                {% else %}
+                                    <td><span style="color:green">UnPaid</span></td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
