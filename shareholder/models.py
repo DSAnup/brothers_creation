@@ -29,3 +29,27 @@ class ShareHolder(models.Model):
 
     def __str__(self):
         return self.userName
+
+
+class ShareHolderSetting(models.Model):
+    shareHolder = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        verbose_name="Share Holder",
+    )
+    shareNumber = models.IntegerField(default=1, verbose_name="Share Number")
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+    registrationAmount = models.IntegerField(
+        default=1000, verbose_name="Registration Fee"
+    )
+    installmentAmount = models.IntegerField(
+        default=500, verbose_name="Installment Amount"
+    )
+
+    def __str__(self):
+        return self.shareHolder.userName
