@@ -53,3 +53,24 @@ class ShareHolderSetting(models.Model):
 
     def __str__(self):
         return self.shareHolder.userName
+
+
+class ShareHolderInstallment(models.Model):
+    shareHolder = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        verbose_name="Share Holder",
+    )
+    InstallmentDate = models.DateField(
+        default=timezone.now, verbose_name="Installment Date"
+    )
+    InstallmentAmount = models.IntegerField(null=False, blank=False)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.shareHolder.userName
