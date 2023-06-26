@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/anupmond/brothers/
+    - /bin/cp -R images $DEPLOYPATH
