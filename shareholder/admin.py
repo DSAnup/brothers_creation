@@ -38,7 +38,6 @@ admin.site.register(ShareHolder, ShareHolderAdmin)
 class ShareHolderSettingAdmin(admin.ModelAdmin):
     fields = [
         ("shareHolder", "shareNumber"),
-        ("registrationAmount", "installmentAmount"),
     ]
     list_display = (
         "shareHolder",
@@ -50,6 +49,8 @@ class ShareHolderSettingAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if change:
             existing_obj = ShareHolderSetting.objects.get(pk=obj.pk)
+            obj.registrationAmount = form.cleaned_data["shareNumber"] * 1000
+            obj.installmentAmount = form.cleaned_data["shareNumber"] * 500
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
@@ -61,6 +62,8 @@ class ShareHolderSettingAdmin(admin.ModelAdmin):
                     request, "The user name is already taken please choose another"
                 )
             obj.CreatedBy = request.user.id
+            obj.registrationAmount = form.cleaned_data["shareNumber"] * 1000
+            obj.installmentAmount = form.cleaned_data["shareNumber"] * 500
             obj.save()
 
 
