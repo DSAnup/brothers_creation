@@ -94,11 +94,11 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         if change:
             existing_obj = ShareHolderInstallment.objects.get(pk=obj.pk)
             if year == current_year and month == curent_month and day > 10:
-                installmentAmount = (
-                    setting.installmentAmount * setting.shareNumber
-                ) + (50 * setting.shareNumber)
+                installmentAmount = (setting.installmentAmount) + (
+                    50 * setting.shareNumber
+                )
             else:
-                installmentAmount = setting.installmentAmount * setting.shareNumber
+                installmentAmount = setting.installmentAmount
             obj.InstallmentAmount = installmentAmount
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
