@@ -111,11 +111,11 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
             ).exists():
                 return messages.error(request, "You already paid this month")
             if year == current_year and month == curent_month and day > 10:
-                installmentAmount = (
-                    setting.installmentAmount * setting.shareNumber
-                ) + (50 * setting.shareNumber)
+                installmentAmount = (setting.installmentAmount) + (
+                    50 * setting.shareNumber
+                )
             else:
-                installmentAmount = setting.installmentAmount * setting.shareNumber
+                installmentAmount = setting.installmentAmount
             obj.DateCreated = timezone.now()
             obj.CreatedBy = request.user.id
             obj.InstallmentAmount = installmentAmount
