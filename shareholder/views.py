@@ -42,7 +42,7 @@ def index(request):
         ) - current_month_received_shareholder_installment
     else:
         total_receivable_amount = (
-            current_month_received_shareholder_installment * totalShareNo
+            500 * totalShareNo
         ) - current_month_received_shareholder_installment
 
     template = loader.get_template("index.html")
