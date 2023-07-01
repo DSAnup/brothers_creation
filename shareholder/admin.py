@@ -93,7 +93,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
 
         if change:
             existing_obj = ShareHolderInstallment.objects.get(pk=obj.pk)
-            if year == current_year and month == curent_month and day > 10:
+            if year == current_year and month == month and day > 10:
                 installmentAmount = (setting.installmentAmount) + (
                     50 * setting.shareNumber
                 )
@@ -110,7 +110,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
                 shareHolder=obj.shareHolder, InstallmentDate__month=month
             ).exists():
                 return messages.error(request, "You already paid this month")
-            if year == current_year and month == curent_month and day > 10:
+            if year == current_year and month == month and day > 10:
                 installmentAmount = (setting.installmentAmount) + (
                     50 * setting.shareNumber
                 )
