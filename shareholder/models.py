@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -77,7 +78,8 @@ class ShareHolderInstallment(models.Model):
     haveDiscount = models.IntegerField(
         null=True, blank=True, default=0, verbose_name="Consider Discount"
     )
-    comments = models.TextField(null=True, blank=True)
+    # comments = models.TextField(null=True, blank=True)
+    comments = RichTextField(null=True, blank=True)
 
     def __str__(self):
         return self.shareHolder.userName
