@@ -13,6 +13,27 @@ current_month = timezone.now().month
 current_year = timezone.now().year
 
 
+def custom_query(query):
+    # Perform the custom query
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        results = cursor.fetchall()
+        rows_as_dict = []
+        for row in results:
+            row_dict = dict(zip(columns, row))
+            rows_as_dict.append(row_dict)
+        return rows_as_dict
+
+
+def calculate_sum(query):
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchone()[0]  # Fetch the first column of the first row
+
+    return result
+
+
 # Create your views here.
 def index(request):
     totalShareHolder = ShareHolder.objects.all().count()
@@ -38,11 +59,24 @@ def index(request):
         current_month_received_shareholder_installment = 0
 
     margin_time = date(current_year, current_month, 10)
+    myquery_unpaid_shareNo = """
+        SELECT SUM(SS.shareNumber) AS sumunpaid
+                FROM shareholder_shareholder AS S
+                left join shareholder_shareholdersetting AS SS ON SS.shareHolder_id = S.id
+                WHERE S.id NOT IN (
+                    SELECT SI.shareholder_id
+                    FROM shareholder_shareholderinstallment AS SI
+                        WHERE MONTH(SI.InstallmentDate) = MONTH(CURDATE())
+                            AND YEAR(SI.InstallmentDate) = YEAR(CURDATE())
+                    )
+    """
+
+    total_unpaid_shareNo = calculate_sum(myquery_unpaid_shareNo)
+
     if timezone.now().date() > margin_time:
-        total_receivable_amount = (
-            (500 * totalShareNo)
-            + (50 * (totalShareNo - total_recieable_shareholder_installment_count))
-        ) - current_month_received_shareholder_installment
+        total_receivable_amount = (500 * total_unpaid_shareNo) + (
+            (50 * total_unpaid_shareNo)
+        )
     else:
         total_receivable_amount = (
             500 * totalShareNo
@@ -60,19 +94,6 @@ def index(request):
     }
 
     return HttpResponse(template.render(context, request))
-
-
-def custom_query(query):
-    # Perform the custom query
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-        columns = [col[0] for col in cursor.description]
-        results = cursor.fetchall()
-        rows_as_dict = []
-        for row in results:
-            row_dict = dict(zip(columns, row))
-            rows_as_dict.append(row_dict)
-        return rows_as_dict
 
 
 def shareholder(request):
