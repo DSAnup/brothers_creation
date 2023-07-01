@@ -24,3 +24,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# Configure Admin Titles
+admin.site.site_header = "Brothers Creation Administrator"
+admin.site.site_title = "Dashboard"
+admin.site.index_title = "Welcome to Admin Area"
