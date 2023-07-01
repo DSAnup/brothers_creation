@@ -34,6 +34,9 @@ def index(request):
             InstallmentDate__month=current_month, InstallmentDate__year=current_year
         ).aggregate(Sum("InstallmentAmount"))["InstallmentAmount__sum"]
     )
+    if current_month_received_shareholder_installment is None:
+        current_month_received_shareholder_installment = 0
+
     margin_time = date(current_year, current_month, 10)
     if timezone.now().date() > margin_time:
         total_receivable_amount = (
