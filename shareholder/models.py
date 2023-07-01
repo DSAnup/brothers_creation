@@ -71,6 +71,13 @@ class ShareHolderInstallment(models.Model):
     DateCreated = models.DateTimeField(default=timezone.now)
     DateLastUpdated = models.DateTimeField(default=timezone.now)
     UpdatedBy = models.IntegerField(null=True, blank=True)
+    havePenalty = models.IntegerField(
+        null=True, blank=True, default=0, verbose_name="Have Penalty"
+    )
+    haveDiscount = models.IntegerField(
+        null=True, blank=True, default=0, verbose_name="Consider Discount"
+    )
+    comments = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.shareHolder.userName

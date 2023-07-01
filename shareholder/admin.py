@@ -73,8 +73,17 @@ admin.site.register(ShareHolderSetting, ShareHolderSettingAdmin)
 class ShareHolderInstallmentAdmin(admin.ModelAdmin):
     fields = [
         ("shareHolder", "InstallmentDate"),
+        ("havePenalty", "haveDiscount"),
+        ("comments"),
     ]
-    list_display = ("shareHolder", "InstallmentDate", "InstallmentAmount")
+    list_display = (
+        "shareHolder",
+        "InstallmentDate",
+        "InstallmentAmount",
+        "havePenalty",
+        "haveDiscount",
+        "comments",
+    )
 
     def save_model(self, request, obj, form, change):
         current_datetime = timezone.now()
@@ -94,11 +103,18 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         if change:
             existing_obj = ShareHolderInstallment.objects.get(pk=obj.pk)
             if year == current_year and month == month and day > 10:
-                installmentAmount = (setting.installmentAmount) + (
-                    50 * setting.shareNumber
+                installmentAmount = (
+                    (setting.installmentAmount)
+                    + (50 * setting.shareNumber)
+                    + form.cleaned_data["havePenalty"]
+                    - form.cleaned_data["haveDiscount"]
                 )
             else:
-                installmentAmount = setting.installmentAmount
+                installmentAmount = (
+                    setting.installmentAmount
+                    + form.cleaned_data["havePenalty"]
+                    - form.cleaned_data["haveDiscount"]
+                )
             obj.InstallmentAmount = installmentAmount
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
@@ -111,11 +127,18 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
             ).exists():
                 return messages.error(request, "You already paid this month")
             if year == current_year and month == month and day > 10:
-                installmentAmount = (setting.installmentAmount) + (
-                    50 * setting.shareNumber
+                installmentAmount = (
+                    (setting.installmentAmount)
+                    + (50 * setting.shareNumber)
+                    + form.cleaned_data["havePenalty"]
+                    - form.cleaned_data["haveDiscount"]
                 )
             else:
-                installmentAmount = setting.installmentAmount
+                installmentAmount = (
+                    setting.installmentAmount
+                    + form.cleaned_data["havePenalty"]
+                    - form.cleaned_data["haveDiscount"]
+                )
             obj.DateCreated = timezone.now()
             obj.CreatedBy = request.user.id
             obj.InstallmentAmount = installmentAmount
