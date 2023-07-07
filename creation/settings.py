@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+import socket
+
+# Get the domain name
+domain_name = socket.getfqdn()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,12 +31,7 @@ SECRET_KEY = "django-insecure-*0o_n+h9sdm+re14ugfh=shm5!^!amn!r-__a)9qkc4-1rh-e9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-import socket
-
-# Get the current host
-current_host = socket.gethostname()
-
-ALLOWED_HOSTS = ["brothers.anupmondal.me", "127.0.0.1"]
+ALLOWED_HOSTS = ["server.bestcloudns.biz", "127.0.0.1"]
 
 INTERNAL_IPS = [
     # ...
@@ -91,7 +91,7 @@ WSGI_APPLICATION = "creation.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if current_host == ALLOWED_HOSTS[0]:
+if domain_name == ALLOWED_HOSTS[0]:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
