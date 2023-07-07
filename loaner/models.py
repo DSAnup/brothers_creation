@@ -19,11 +19,11 @@ class Loaner(models.Model):
     )
     password = models.CharField(max_length=100, blank=True, null=True, default="123456")
     isActive = models.BooleanField(default=True, verbose_name="Is Active")
-    profilePic = models.FileField(upload_to="images/", null=True, blank=True)
+    profilePic = models.FileField(upload_to="images/loaner/", null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
     DateLastUpdated = models.DateTimeField(default=timezone.now)
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.firstName + self.lastName
+        return self.firstName + " " + self.lastName

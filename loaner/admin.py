@@ -8,10 +8,10 @@ class LoanerAdmin(admin.ModelAdmin):
     fields = [
         ("userName", "password"),
         ("firstName", "lastName"),
-        ("mobile", "isMember"),
-        ("address", "profilePic"),
+        ("mobile", "address"),
+        ("profilePic"),
     ]
-    list_display = ("userName", "firstName", "mobile")
+    list_display = ("userName", "firstName", "mobile", "address")
 
     def save_model(self, request, obj, form, change):
         if change:
