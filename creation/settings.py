@@ -39,6 +39,7 @@ INTERNAL_IPS = [
 INSTALLED_APPS = [
     "debug_toolbar",
     "shareholder.apps.ShareholderConfig",
+    "loaner",
     "bootstrap5",
     "ckeditor",
     "django.contrib.admin",
