@@ -15,4 +15,9 @@ urlpatterns = [
         views.sMonthlyUnPaid,
         name="sMonthlyUnPaid",
     ),
+    path(
+        "loanerList/",
+        views.loanerList,
+        name="loanerList",
+    ),
 ]

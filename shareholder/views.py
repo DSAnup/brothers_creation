@@ -1,7 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from .models import *
+from loaner.models import *
 from django.db.models import Sum
 
 from django.utils import timezone
@@ -148,3 +149,9 @@ def sMonthlyUnPaid(request):
         "myList": mydata,
     }
     return HttpResponse(template.render(context, request))
+
+
+def loanerList(request):
+    LoanerList = Loaner.objects.all()
+
+    return render(request, "loaner/loaner.html", {"LoanerList": LoanerList})
