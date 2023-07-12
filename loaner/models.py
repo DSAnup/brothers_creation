@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import models
 from django.utils import timezone
+from shareholder.models import ShareHolder
 
 # Create your models here.
 
@@ -27,3 +28,38 @@ class Loaner(models.Model):
 
     def __str__(self):
         return self.firstName + " " + self.lastName
+
+
+class Loan(models.Model):
+    Loaner = models.ForeignKey(
+        Loaner,
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        verbose_name="Loaner",
+    )
+    LoanAmount = models.IntegerField(
+        null=False, blank=False, verbose_name="Loan Amount"
+    )
+    LoanGivenDate = models.DateField(default=timezone.now, verbose_name="Loan Given")
+    InterestRate = models.IntegerField(
+        null=False, blank=False, default="3", verbose_name="Interest Rate"
+    )
+    InterestPay = models.IntegerField(null=True, blank=True)
+    Reference1 = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        related_name="Reference_one",
+        verbose_name="Reference One",
+    )
+    Reference2 = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        related_name="Reference_two",
+        verbose_name="Reference Two",
+    )
+    comments = models.TextField(null=True, blank=True)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)

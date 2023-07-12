@@ -31,3 +31,36 @@ class LoanerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Loaner, LoanerAdmin)
+
+
+class LoanAdmin(admin.ModelAdmin):
+    fields = [
+        ("Loaner", "LoanAmount"),
+        ("LoanGivenDate", "InterestRate"),
+        ("Reference1", "Reference2"),
+        ("comments"),
+    ]
+    list_display = (
+        "Loaner",
+        "LoanAmount",
+        "LoanGivenDate",
+        "InterestRate",
+        "Reference1",
+        "Reference2",
+        "InterestPay",
+    )
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            existing_obj = Loan.objects.get(pk=obj.pk)
+            obj.DateCreated = existing_obj.DateCreated
+            obj.DateLastUpdated = timezone.now()
+            obj.CreatedBy = existing_obj.CreatedBy
+            obj.UpdatedBy = request.user.id
+            obj.save()
+        else:
+            obj.CreatedBy = request.user.id
+            obj.save()
+
+
+admin.site.register(Loan, LoanAdmin)
