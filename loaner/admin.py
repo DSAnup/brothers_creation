@@ -38,9 +38,10 @@ class LoanAdmin(admin.ModelAdmin):
         ("Loaner", "LoanAmount"),
         ("LoanGivenDate", "InterestRate"),
         ("Reference1", "Reference2"),
-        ("comments"),
+        ("LoanNumber", "Comments"),
     ]
     list_display = (
+        "LoanNumber",
         "Loaner",
         "LoanAmount",
         "LoanGivenDate",

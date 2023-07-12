@@ -58,8 +58,30 @@ class Loan(models.Model):
         related_name="Reference_two",
         verbose_name="Reference Two",
     )
-    comments = models.TextField(null=True, blank=True)
+    LoanNumber = models.CharField(max_length=20, null=False, blank=False, default="001")
+    Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
     DateLastUpdated = models.DateTimeField(default=timezone.now)
     UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.Loaner + " " + self.LoanNumber
+
+
+class LoanReturn(models.Model):
+    Loan = models.ForeignKey(
+        Loan, on_delete=models.DO_NOTHING, verbose_name="Loan Account"
+    )
+    ReturnAmount = models.IntegerField(
+        null=False, blank=False, verbose_name="Return Amount"
+    )
+    ReturnDate = models.DateField(default=timezone.now, verbose_name="Return Date")
+    Comments = models.TextField(null=True, blank=True)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.Loan
