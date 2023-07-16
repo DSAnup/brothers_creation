@@ -51,22 +51,30 @@ class Loan(models.Model):
         on_delete=models.DO_NOTHING,
         related_name="Reference_one",
         verbose_name="Reference One",
+        null=True,
+        blank=True,
     )
     Reference2 = models.ForeignKey(
         ShareHolder,
         on_delete=models.DO_NOTHING,
         related_name="Reference_two",
         verbose_name="Reference Two",
+        null=True,
+        blank=True,
     )
-    LoanNumber = models.CharField(max_length=20, null=False, blank=False, default="001")
+    LoanNumber = models.IntegerField(null=False, blank=False)
     Comments = models.TextField(null=True, blank=True)
+    isClosed = models.BooleanField(default=False, verbose_name="Is Closed")
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
     DateLastUpdated = models.DateTimeField(default=timezone.now)
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.Loaner + " " + self.LoanNumber
+        return self.Loaner.userName + " - 000" + str(self.LoanNumber)
+
+    class Meta:
+        get_latest_by = "LoanNumber"
 
 
 class LoanReturn(models.Model):
