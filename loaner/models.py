@@ -93,3 +93,32 @@ class LoanReturn(models.Model):
 
     def __str__(self):
         return str(self.Loan)
+
+
+class LoanMonthlyInstallment(models.Model):
+    Loan = models.ForeignKey(
+        Loan, on_delete=models.DO_NOTHING, verbose_name="Loan Account"
+    )
+    InstallmentAmount = models.IntegerField(
+        null=False, blank=False, verbose_name="Installment Amount"
+    )
+    InstallmentPenalty = models.IntegerField(
+        null=False, blank=False, verbose_name="Installment Penalty Rate", default="1"
+    )
+    AnyDiscount = models.IntegerField(
+        null=False, blank=False, verbose_name="Any Discount", default="0"
+    )
+    InstallmentDate = models.DateField(
+        default=timezone.now, verbose_name="Installment Date"
+    )
+    InstallmentDate = models.DateField(
+        default=timezone.now, verbose_name="Next Installment Date"
+    )
+    Comments = models.TextField(null=True, blank=True)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.Loan)
