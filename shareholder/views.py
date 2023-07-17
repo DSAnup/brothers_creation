@@ -155,3 +155,15 @@ def loanerList(request):
     LoanerList = Loaner.objects.all()
 
     return render(request, "loaner/loaner.html", {"LoanerList": LoanerList})
+
+
+def loanList(request):
+    loanList = Loan.objects.all()
+
+    return render(request, "loaner/loanList.html", {"loanList": loanList})
+
+
+def LoanHistory(request, id):
+    LoanHistory = LoanReturn.objects.filter(Loan=id)
+
+    return render(request, "loaner/LoanHistory.html", {"LoanHistory": LoanHistory})

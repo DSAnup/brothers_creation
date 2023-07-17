@@ -1,0 +1,43 @@
+{% extends "master.html" %} 
+{% block title %} Loan List {% endblock %}
+{% block content %} 
+    
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Loan List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Loaner</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Loan Amount</th>
+                            <th>Loan Given Date</th>
+                            <th>Interest Rate</th>
+                            <th>Monthly Interest</th>
+                            <th>Return History</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stu in loanList %}
+                            <tr>
+                                <td>{{stu.Loaner}}</td>
+                                <td>{{stu.Loaner.mobile}}</td>
+                                <td>{{stu.Loaner.address}}</td>
+                                <td>{{stu.LoanAmount}}</td>
+                                <td>{{stu.LoanGivenDate}}</td>
+                                <td>{{stu.InterestRate}}</td>
+                                <td>{{stu.InterestPay}}</td>
+                                <td><a href="{% url 'LoanHistory' stu.id %}">View</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

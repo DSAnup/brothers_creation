@@ -20,4 +20,14 @@ urlpatterns = [
         views.loanerList,
         name="loanerList",
     ),
+    path(
+        "loanList/",
+        views.loanList,
+        name="loanList",
+    ),
+    path(
+        "LoanHistory/<int:id>",
+        views.LoanHistory,
+        name="LoanHistory",
+    ),
 ]
