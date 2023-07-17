@@ -157,3 +157,105 @@ class LoanReturnAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LoanReturn, LoanReturnAdmin)
+
+
+class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
+    fields = [
+        ("Loan", "InstallmentMonth"),
+        ("InstallmentDate", "InstallmentPenalty", "AnyDiscount"),
+        ("Comments"),
+    ]
+    list_display = (
+        "Loan",
+        "InstallmentMonth",
+        "InstallmentDate",
+        "InstallmentAmount",
+        "InstallmentPenalty",
+        "AnyDiscount",
+        "Comments",
+    )
+
+    def save_model(self, request, obj, form, change):
+        Cleaneddate = form.cleaned_data["InstallmentMonth"]
+        Year = Cleaneddate.year
+        Month = Cleaneddate.month
+
+        InstallmentDate = form.cleaned_data["InstallmentDate"]
+        InstallmentDay = InstallmentDate.day
+        LoanGivenDate = form.cleaned_data["Loan"].LoanGivenDate
+        MarginDay = LoanGivenDate.day
+
+        if change:
+            existing_obj = LoanMonthlyInstallment.objects.get(pk=obj.pk)
+            CurrentLoanID = form.cleaned_data["Loan"].pk
+            AmountCheck = form.cleaned_data["Loan"].LoanAmount
+            InterestRate = form.cleaned_data["Loan"].InterestRate
+
+            PreviousReturnAmount = LoanReturn.objects.filter(
+                Loan_id=CurrentLoanID
+            ).aggregate(Sum("ReturnAmount"))["ReturnAmount__sum"]
+
+            if PreviousReturnAmount is None:
+                RemainAmount = AmountCheck
+            else:
+                RemainAmount = AmountCheck - PreviousReturnAmount
+
+            if RemainAmount == 0:
+                return messages.success(request, "You have no pending Installment")
+
+            if InstallmentDay > MarginDay:
+                CalculateInterest = (
+                    (RemainAmount / 100)
+                    * (InterestRate + form.cleaned_data["InstallmentPenalty"])
+                ) - form.cleaned_data["AnyDiscount"]
+            else:
+                CalculateInterest = (
+                    (RemainAmount / 100) * InterestRate
+                ) - form.cleaned_data["AnyDiscount"]
+
+            obj.InstallmentAmount = CalculateInterest
+            obj.DateCreated = existing_obj.DateCreated
+            obj.DateLastUpdated = timezone.now()
+            obj.CreatedBy = existing_obj.CreatedBy
+            obj.UpdatedBy = request.user.id
+            obj.save()
+        else:
+            CurrentLoanID = form.cleaned_data["Loan"].pk
+            AmountCheck = form.cleaned_data["Loan"].LoanAmount
+            InterestRate = form.cleaned_data["Loan"].InterestRate
+
+            if LoanMonthlyInstallment.objects.filter(
+                Loan=CurrentLoanID,
+                InstallmentMonth__month=Month,
+                InstallmentMonth__year=Year,
+            ).exists():
+                return messages.error(request, "You already paid this month")
+
+            PreviousReturnAmount = LoanReturn.objects.filter(
+                Loan_id=CurrentLoanID
+            ).aggregate(Sum("ReturnAmount"))["ReturnAmount__sum"]
+
+            if PreviousReturnAmount is None:
+                RemainAmount = AmountCheck
+            else:
+                RemainAmount = AmountCheck - PreviousReturnAmount
+
+            if RemainAmount == 0:
+                return messages.success(request, "You have no pending Installment")
+
+            if InstallmentDay > MarginDay:
+                CalculateInterest = (
+                    (RemainAmount / 100)
+                    * (InterestRate + form.cleaned_data["InstallmentPenalty"])
+                ) - form.cleaned_data["AnyDiscount"]
+            else:
+                CalculateInterest = (
+                    (RemainAmount / 100) * InterestRate
+                ) - form.cleaned_data["AnyDiscount"]
+
+            obj.InstallmentAmount = CalculateInterest
+            obj.CreatedBy = request.user.id
+            obj.save()
+
+
+admin.site.register(LoanMonthlyInstallment, LoanMonthlyInstallmentAdmin)

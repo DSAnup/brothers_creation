@@ -103,16 +103,16 @@ class LoanMonthlyInstallment(models.Model):
         null=False, blank=False, verbose_name="Installment Amount"
     )
     InstallmentPenalty = models.IntegerField(
-        null=False, blank=False, verbose_name="Installment Penalty Rate", default="1"
+        null=False, blank=False, verbose_name="Installment Penalty Rate", default="0"
     )
     AnyDiscount = models.IntegerField(
         null=False, blank=False, verbose_name="Any Discount", default="0"
     )
     InstallmentDate = models.DateField(
-        default=timezone.now, verbose_name="Installment Date"
+        default=timezone.now, verbose_name="Installment Paid Date"
     )
-    InstallmentDate = models.DateField(
-        default=timezone.now, verbose_name="Next Installment Date"
+    InstallmentMonth = models.DateField(
+        default=timezone.now().replace(day=1), verbose_name="Installment Month"
     )
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
