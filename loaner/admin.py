@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 from django.utils import timezone
 from django.contrib import messages
+from django.db.models import Sum
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -89,3 +90,70 @@ class LoanAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Loan, LoanAdmin)
+
+
+class LoanReturnAdmin(admin.ModelAdmin):
+    fields = [
+        ("Loan"),
+        ("ReturnDate", "ReturnAmount"),
+    ]
+    list_display = ("Loan", "ReturnAmount", "ReturnDate")
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            existing_obj = LoanReturn.objects.get(pk=obj.pk)
+            AmountCheck = form.cleaned_data["Loan"].LoanAmount
+            CurrentLoanID = form.cleaned_data["Loan"].pk
+            PreviousReturnAmount = LoanReturn.objects.filter(
+                Loan_id=CurrentLoanID
+            ).aggregate(Sum("ReturnAmount"))["ReturnAmount__sum"]
+
+            if PreviousReturnAmount is None:
+                PreviousAmount = form.cleaned_data["ReturnAmount"]
+                RemainReturn = AmountCheck
+                ReturnAmount = 0
+            else:
+                PreviousAmount = (
+                    form.cleaned_data["ReturnAmount"] + PreviousReturnAmount
+                )
+                RemainReturn = AmountCheck - PreviousReturnAmount
+                ReturnAmount = PreviousReturnAmount
+
+            if PreviousAmount > AmountCheck:
+                return messages.error(
+                    request,
+                    f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
+                )
+            obj.DateCreated = existing_obj.DateCreated
+            obj.DateLastUpdated = timezone.now()
+            obj.CreatedBy = existing_obj.CreatedBy
+            obj.UpdatedBy = request.user.id
+            obj.save()
+        else:
+            AmountCheck = form.cleaned_data["Loan"].LoanAmount
+            CurrentLoanID = form.cleaned_data["Loan"].pk
+            PreviousReturnAmount = LoanReturn.objects.filter(
+                Loan_id=CurrentLoanID
+            ).aggregate(Sum("ReturnAmount"))["ReturnAmount__sum"]
+
+            if PreviousReturnAmount is None:
+                PreviousAmount = form.cleaned_data["ReturnAmount"]
+                RemainReturn = AmountCheck
+                ReturnAmount = 0
+            else:
+                PreviousAmount = (
+                    form.cleaned_data["ReturnAmount"] + PreviousReturnAmount
+                )
+                RemainReturn = AmountCheck - PreviousReturnAmount
+                ReturnAmount = PreviousReturnAmount
+
+            if PreviousAmount > AmountCheck:
+                return messages.error(
+                    request,
+                    f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
+                )
+            obj.CreatedBy = request.user.id
+            obj.save()
+
+
+admin.site.register(LoanReturn, LoanReturnAdmin)

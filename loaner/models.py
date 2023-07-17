@@ -92,4 +92,4 @@ class LoanReturn(models.Model):
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.Loan
+        return str(self.Loan)
