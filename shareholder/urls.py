@@ -40,4 +40,9 @@ urlpatterns = [
         views.LoanInstallmentHistory,
         name="LoanInstallmentHistory",
     ),
+    path(
+        "ReferenceBonusList/",
+        views.ReferenceBonusList,
+        name="ReferenceBonusList",
+    ),
 ]

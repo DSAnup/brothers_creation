@@ -122,3 +122,50 @@ class LoanMonthlyInstallment(models.Model):
 
     def __str__(self):
         return str(self.Loan)
+
+
+class ReferenceBonus(models.Model):
+    Loan = models.ForeignKey(
+        Loan,
+        on_delete=models.DO_NOTHING,
+        verbose_name="Loan Number",
+        null=True,
+        blank=True,
+    )
+    BonusAmount1 = models.IntegerField(
+        null=True, blank=True, verbose_name="Bonus Amount 1"
+    )
+    BonusAmount2 = models.IntegerField(
+        null=True, blank=True, verbose_name="Bonus Amount 2"
+    )
+    Reference1 = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        related_name="Reference_Bonus_One",
+        verbose_name="Reference One",
+        null=True,
+        blank=True,
+    )
+    Reference2 = models.ForeignKey(
+        ShareHolder,
+        on_delete=models.DO_NOTHING,
+        related_name="Reference_Bonus_Two",
+        verbose_name="Reference Two",
+        null=True,
+        blank=True,
+    )
+    BonusGivenDate = models.DateField(
+        default=timezone.now, verbose_name="Bonus Given Date"
+    )
+    PaidMonth = models.DateField(
+        default=timezone.now().replace(day=1), verbose_name="Paid Month"
+    )
+    isPaid = models.BooleanField(default=False, verbose_name="Is Paid")
+    Comments = models.TextField(null=True, blank=True)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.Loan)

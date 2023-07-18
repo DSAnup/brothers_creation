@@ -3,6 +3,7 @@ from .models import *
 from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Sum
+from django.utils.dateformat import DateFormat
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -183,13 +184,16 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
         InstallmentDate = form.cleaned_data["InstallmentDate"]
         InstallmentDay = InstallmentDate.day
         LoanGivenDate = form.cleaned_data["Loan"].LoanGivenDate
+        Reference1 = form.cleaned_data["Loan"].Reference1
+        Reference2 = form.cleaned_data["Loan"].Reference2
         MarginDay = LoanGivenDate.day
+
+        CurrentLoanID = form.cleaned_data["Loan"].pk
+        AmountCheck = form.cleaned_data["Loan"].LoanAmount
+        InterestRate = form.cleaned_data["Loan"].InterestRate
 
         if change:
             existing_obj = LoanMonthlyInstallment.objects.get(pk=obj.pk)
-            CurrentLoanID = form.cleaned_data["Loan"].pk
-            AmountCheck = form.cleaned_data["Loan"].LoanAmount
-            InterestRate = form.cleaned_data["Loan"].InterestRate
 
             PreviousReturnAmount = LoanReturn.objects.filter(
                 Loan_id=CurrentLoanID
@@ -212,17 +216,35 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 CalculateInterest = (
                     (RemainAmount / 100) * InterestRate
                 ) - form.cleaned_data["AnyDiscount"]
+
             obj.InstallmentAmount = CalculateInterest
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
             obj.UpdatedBy = request.user.id
             obj.save()
-        else:
-            CurrentLoanID = form.cleaned_data["Loan"].pk
-            AmountCheck = form.cleaned_data["Loan"].LoanAmount
-            InterestRate = form.cleaned_data["Loan"].InterestRate
 
+            if Reference1 or Reference2:
+                secondary_obj = ReferenceBonus.objects.create()
+                CalculateBonus = (RemainAmount / 100) * 0.5
+
+                if Reference1 and Reference2:
+                    DivideBonus = CalculateBonus / 2
+                    secondary_obj.BonusAmount1 = DivideBonus
+                    secondary_obj.BonusAmount2 = DivideBonus
+                elif Reference1:
+                    secondary_obj.BonusAmount1 = CalculateBonus
+                else:
+                    secondary_obj.BonusAmount2 = CalculateBonus
+
+                secondary_obj.Reference1 = Reference1
+                secondary_obj.Reference2 = Reference2
+                secondary_obj.CreatedBy = request.user.id
+                secondary_obj.Loan = form.cleaned_data["Loan"]
+                secondary_obj.PaidMonth = Cleaneddate
+                secondary_obj.save()
+
+        else:
             if LoanMonthlyInstallment.objects.filter(
                 Loan=CurrentLoanID,
                 InstallmentMonth__month=Month,
@@ -256,5 +278,57 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
             obj.CreatedBy = request.user.id
             obj.save()
 
+            if Reference1 or Reference2:
+                secondary_obj = ReferenceBonus.objects.create()
+                CalculateBonus = (RemainAmount / 100) * 0.5
+
+                if Reference1 and Reference2:
+                    DivideBonus = CalculateBonus / 2
+                    secondary_obj.BonusAmount1 = DivideBonus
+                    secondary_obj.BonusAmount2 = DivideBonus
+                elif Reference1:
+                    secondary_obj.BonusAmount1 = CalculateBonus
+                else:
+                    secondary_obj.BonusAmount2 = CalculateBonus
+
+                secondary_obj.Reference1 = Reference1
+                secondary_obj.Reference2 = Reference2
+                secondary_obj.CreatedBy = request.user.id
+                secondary_obj.Loan = form.cleaned_data["Loan"]
+                secondary_obj.PaidMonth = Cleaneddate
+                secondary_obj.save()
+
 
 admin.site.register(LoanMonthlyInstallment, LoanMonthlyInstallmentAdmin)
+
+
+class ReferenceBonusAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        "Loan",
+        "Reference1",
+        "Reference2",
+        "BonusAmount1",
+        "BonusAmount2",
+        "PaidMonth",
+    )
+    fields = [
+        readonly_fields,
+        ("BonusGivenDate", "isPaid"),
+    ]
+
+    list_display = (
+        "Loan",
+        "Reference1",
+        "BonusAmount1",
+        "Reference2",
+        "BonusAmount2",
+        "BonusGivenDate",
+        "Paymonth",
+        "isPaid",
+    )
+
+    def Paymonth(self, obj):
+        return DateFormat(obj.PaidMonth).format("F")
+
+
+admin.site.register(ReferenceBonus, ReferenceBonusAdmin)

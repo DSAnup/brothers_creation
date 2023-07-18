@@ -1,0 +1,43 @@
+{% extends "master.html" %} 
+{% block title %} Reference Bonus List {% endblock %}
+{% block content %} 
+    
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Reference Bonus List </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Loan Number</th>
+                            <th>Reference 1</th>
+                            <th>Amount</th>
+                            <th>Reference 2</th>
+                            <th>Amount 2</th>
+                            <th>Given Date</th>
+                            <th>Month</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for n in ReferenceBonusList %}
+                            <tr>
+                                <td>{{n.Loan}}</td>
+                                <td>{{n.Reference1}}</td>
+                                <td>{{n.BonusAmount1}}</td>
+                                <td>{{n.Reference2}}</td>
+                                <td>{{n.BonusAmount2}}</td>
+                                <td>{{n.BonusGivenDate}}</td>
+                                <td>{{n.PaidMonth | date:"F"}}</td>
+                                <td>{% if n.isPaid %} Paid {% else %} UnPaid {% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
