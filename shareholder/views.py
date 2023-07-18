@@ -148,3 +148,13 @@ def sMonthlyUnPaid(request):
         "myList": mydata,
     }
     return HttpResponse(template.render(context, request))
+
+
+def ShareholderInstallmentHistory(request, id):
+    InstallmentList = ShareHolderInstallment.objects.filter(shareHolder=id)
+
+    template = loader.get_template("ShareholderInstallmentHistory.html")
+    context = {
+        "InstallmentList": InstallmentList,
+    }
+    return HttpResponse(template.render(context, request))
