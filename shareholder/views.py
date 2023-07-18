@@ -167,3 +167,13 @@ def LoanHistory(request, id):
     LoanHistory = LoanReturn.objects.filter(Loan=id)
 
     return render(request, "loaner/LoanHistory.html", {"LoanHistory": LoanHistory})
+
+
+def ShareholderInstallmentHistory(request, id):
+    InstallmentList = ShareHolderInstallment.objects.filter(shareHolder=id)
+
+    template = loader.get_template("ShareholderInstallmentHistory.html")
+    context = {
+        "InstallmentList": InstallmentList,
+    }
+    return HttpResponse(template.render(context, request))
