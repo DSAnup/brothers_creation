@@ -177,3 +177,13 @@ def LoanInstallmentHistory(request, id):
         "loaner/LoanInstallmentHistory.html",
         {"LoanInstallmentHistory": LoanInstallmentHistory},
     )
+
+
+def ReferenceBonusList(request):
+    ReferenceBonusList = ReferenceBonus.objects.all()
+
+    return render(
+        request,
+        "loaner/ReferenceBonusList.html",
+        {"ReferenceBonusList": ReferenceBonusList},
+    )
