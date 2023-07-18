@@ -128,7 +128,7 @@ class ReferenceBonus(models.Model):
     Loan = models.ForeignKey(
         Loan,
         on_delete=models.DO_NOTHING,
-        verbose_name="Loan Account",
+        verbose_name="Loan Number",
         null=True,
         blank=True,
     )

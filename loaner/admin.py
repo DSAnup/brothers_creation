@@ -3,6 +3,7 @@ from .models import *
 from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Sum
+from django.utils.dateformat import DateFormat
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -299,3 +300,35 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LoanMonthlyInstallment, LoanMonthlyInstallmentAdmin)
+
+
+class ReferenceBonusAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        "Loan",
+        "Reference1",
+        "Reference2",
+        "BonusAmount1",
+        "BonusAmount2",
+        "PaidMonth",
+    )
+    fields = [
+        readonly_fields,
+        ("BonusGivenDate", "isPaid"),
+    ]
+
+    list_display = (
+        "Loan",
+        "Reference1",
+        "BonusAmount1",
+        "Reference2",
+        "BonusAmount2",
+        "BonusGivenDate",
+        "Paymonth",
+        "isPaid",
+    )
+
+    def Paymonth(self, obj):
+        return DateFormat(obj.PaidMonth).format("F")
+
+
+admin.site.register(ReferenceBonus, ReferenceBonusAdmin)
