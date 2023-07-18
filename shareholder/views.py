@@ -177,3 +177,13 @@ def ShareholderInstallmentHistory(request, id):
         "InstallmentList": InstallmentList,
     }
     return HttpResponse(template.render(context, request))
+
+
+def LoanInstallmentHistory(request, id):
+    LoanInstallmentHistory = LoanMonthlyInstallment.objects.filter(Loan=id)
+
+    return render(
+        request,
+        "loaner/LoanInstallmentHistory.html",
+        {"LoanInstallmentHistory": LoanInstallmentHistory},
+    )

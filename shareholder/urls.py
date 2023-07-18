@@ -35,4 +35,9 @@ urlpatterns = [
         views.LoanHistory,
         name="LoanHistory",
     ),
+    path(
+        "LoanInstallmentHistory/<int:id>",
+        views.LoanInstallmentHistory,
+        name="LoanInstallmentHistory",
+    ),
 ]

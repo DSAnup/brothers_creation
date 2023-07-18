@@ -1,0 +1,39 @@
+{% extends "master.html" %} 
+{% block title %} Loan Return History List {% endblock %}
+{% block content %} 
+    
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Loan Return History List of : {{ LoanInstallmentHistory|first }}<span style="float:right"><a href="/loanList">Back</a><span></h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Installment Date</th>
+                            <th>Installment Amount</th>
+                            <th>Installment Month</th>
+                            <th>Installment Penalty</th>
+                            <th>Discount</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for n in LoanInstallmentHistory %}
+                            <tr>
+                                <td>{{n.InstallmentDate}}</td>
+                                <td>{{n.InstallmentAmount}}</td>
+                                <td>{{n.InstallmentMonth}}</td>
+                                <td>{{n.InstallmentPenalty}}</td>
+                                <td>{{n.AnyDiscount}}</td>
+                                <td>{{n.Comments}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
