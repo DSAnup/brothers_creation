@@ -19,6 +19,7 @@
                             <th>Loan Given Date</th>
                             <th>Interest Rate</th>
                             <th>Monthly Interest</th>
+                            <th>Installment History</th>
                             <th>Return History</th>
                         </tr>
                     </thead>
@@ -32,6 +33,7 @@
                                 <td>{{stu.LoanGivenDate}}</td>
                                 <td>{{stu.InterestRate}}</td>
                                 <td>{{stu.InterestPay}}</td>
+                                <td><a href="{% url 'LoanInstallmentHistory' stu.id %}">View</a></td>
                                 <td><a href="{% url 'LoanHistory' stu.id %}">View</a></td>
                             </tr>
                         {% endfor %}

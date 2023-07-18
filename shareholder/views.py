@@ -167,3 +167,13 @@ def LoanHistory(request, id):
     LoanHistory = LoanReturn.objects.filter(Loan=id)
 
     return render(request, "loaner/LoanHistory.html", {"LoanHistory": LoanHistory})
+
+
+def LoanInstallmentHistory(request, id):
+    LoanInstallmentHistory = LoanMonthlyInstallment.objects.filter(Loan=id)
+
+    return render(
+        request,
+        "loaner/LoanInstallmentHistory.html",
+        {"LoanInstallmentHistory": LoanInstallmentHistory},
+    )

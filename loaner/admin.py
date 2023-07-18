@@ -212,7 +212,6 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 CalculateInterest = (
                     (RemainAmount / 100) * InterestRate
                 ) - form.cleaned_data["AnyDiscount"]
-
             obj.InstallmentAmount = CalculateInterest
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
