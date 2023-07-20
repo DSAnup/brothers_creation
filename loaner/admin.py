@@ -51,6 +51,7 @@ class LoanAdmin(admin.ModelAdmin):
         "Reference1",
         "Reference2",
         "InterestPay",
+        "isClosed",
     )
 
     ordering = ["LoanNumber"]
@@ -205,6 +206,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
+                obj.isClosed = True
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
@@ -262,6 +264,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
+                obj.isClosed = True
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
