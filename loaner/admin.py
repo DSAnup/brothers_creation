@@ -255,7 +255,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
 
             if Reference1 or Reference2:
                 if ReferenceBonus.objects.filter(
-                    Loan=CurrentLoanID, InstallmentDate__month=Month
+                    Loan=CurrentLoanID, PaidMonth__month=Month
                 ).exists():
                     return
                 secondary_obj = ReferenceBonus.objects.create()
@@ -316,7 +316,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
 
             if Reference1 or Reference2:
                 if ReferenceBonus.objects.filter(
-                    Loan=CurrentLoanID, InstallmentDate__month=Month
+                    Loan=CurrentLoanID, PaidMonth__month=Month
                 ).exists():
                     return
                 secondary_obj = ReferenceBonus.objects.create()
