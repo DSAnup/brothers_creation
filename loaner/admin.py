@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
+from django.shortcuts import get_object_or_404
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -126,6 +127,12 @@ class LoanReturnAdmin(admin.ModelAdmin):
                     request,
                     f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
                 )
+
+            if PreviousAmount == AmountCheck:
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
+
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
@@ -154,6 +161,12 @@ class LoanReturnAdmin(admin.ModelAdmin):
                     request,
                     f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
                 )
+
+            if PreviousAmount == AmountCheck:
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
+
             obj.CreatedBy = request.user.id
             obj.save()
 
@@ -206,7 +219,9 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
-                obj.isClosed = True
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
@@ -264,7 +279,9 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
-                obj.isClosed = True
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
