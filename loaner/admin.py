@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
+from django.shortcuts import get_object_or_404
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -14,6 +15,8 @@ class LoanerAdmin(admin.ModelAdmin):
         ("profilePic"),
     ]
     list_display = ("userName", "firstName", "mobile", "address")
+    list_filter = ["userName"]
+    search_fields = ["userName", "mobile"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -55,6 +58,8 @@ class LoanAdmin(admin.ModelAdmin):
     )
 
     ordering = ["LoanNumber"]
+    list_filter = ["Loaner"]
+    search_fields = ["Loaner__userName", "Reference1__userName", "Reference2__userName"]
 
     def LoanNumberPretify(self, obj):
         return f"000{obj.LoanNumber}"
@@ -100,6 +105,8 @@ class LoanReturnAdmin(admin.ModelAdmin):
         ("ReturnDate", "ReturnAmount"),
     ]
     list_display = ("Loan", "ReturnAmount", "ReturnDate")
+    list_filter = ["Loan"]
+    search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -126,6 +133,12 @@ class LoanReturnAdmin(admin.ModelAdmin):
                     request,
                     f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
                 )
+
+            if PreviousAmount == AmountCheck:
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
+
             obj.DateCreated = existing_obj.DateCreated
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
@@ -154,6 +167,12 @@ class LoanReturnAdmin(admin.ModelAdmin):
                     request,
                     f"The Loaner already paid {ReturnAmount}, Remaining Amount {RemainReturn}",
                 )
+
+            if PreviousAmount == AmountCheck:
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
+
             obj.CreatedBy = request.user.id
             obj.save()
 
@@ -176,6 +195,8 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
         "AnyDiscount",
         "Comments",
     )
+    list_filter = ["Loan"]
+    search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
 
     def save_model(self, request, obj, form, change):
         Cleaneddate = form.cleaned_data["InstallmentMonth"]
@@ -206,7 +227,9 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
-                obj.isClosed = True
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
@@ -264,7 +287,9 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 RemainAmount = AmountCheck - PreviousReturnAmount
 
             if RemainAmount == 0:
-                obj.isClosed = True
+                LoanObject = get_object_or_404(Loan, pk=CurrentLoanID)
+                LoanObject.isClosed = 1
+                LoanObject.save()
                 return messages.success(request, "You have no pending Installment")
 
             if InstallmentDay > MarginDay:
@@ -329,6 +354,13 @@ class ReferenceBonusAdmin(admin.ModelAdmin):
         "Paymonth",
         "isPaid",
     )
+    list_filter = ["Loan"]
+    search_fields = [
+        "Loan__LoanNumber",
+        "Loan__Loaner__userName",
+        "Reference1__userName",
+        "Reference2__userName",
+    ]
 
     def Paymonth(self, obj):
         return DateFormat(obj.PaidMonth).format("F")
