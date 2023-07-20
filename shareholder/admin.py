@@ -19,6 +19,7 @@ class ShareHolderAdmin(admin.ModelAdmin):
         "mobile",
         "firstName",
     ]
+    list_per_page = 30
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -59,6 +60,7 @@ class ShareHolderSettingAdmin(admin.ModelAdmin):
         "shareHolder__mobile",
         "shareHolder__firstName",
     ]
+    list_per_page = 30
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -105,6 +107,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "shareHolder__mobile",
         "shareHolder__firstName",
     ]
+    list_per_page = 30
 
     def save_model(self, request, obj, form, change):
         current_datetime = timezone.now()
