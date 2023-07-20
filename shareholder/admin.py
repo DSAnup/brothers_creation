@@ -12,6 +12,13 @@ class ShareHolderAdmin(admin.ModelAdmin):
         ("address", "profilePic"),
     ]
     list_display = ("userName", "firstName", "mobile")
+    list_filter = ["userName"]
+    search_fields = [
+        "userName",
+        "lastName",
+        "mobile",
+        "firstName",
+    ]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -45,6 +52,13 @@ class ShareHolderSettingAdmin(admin.ModelAdmin):
         "installmentAmount",
         "registrationAmount",
     )
+    list_filter = ["shareHolder"]
+    search_fields = [
+        "shareHolder__userName",
+        "shareHolder__lastName",
+        "shareHolder__mobile",
+        "shareHolder__firstName",
+    ]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -84,6 +98,13 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "haveDiscount",
         "comments",
     )
+    list_filter = ["shareHolder"]
+    search_fields = [
+        "shareHolder__userName",
+        "shareHolder__lastName",
+        "shareHolder__mobile",
+        "shareHolder__firstName",
+    ]
 
     def save_model(self, request, obj, form, change):
         current_datetime = timezone.now()
