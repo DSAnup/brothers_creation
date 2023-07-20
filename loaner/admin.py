@@ -254,6 +254,10 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
             obj.save()
 
             if Reference1 or Reference2:
+                if ReferenceBonus.objects.filter(
+                    Loan=CurrentLoanID, InstallmentDate__month=Month
+                ).exists():
+                    return
                 secondary_obj = ReferenceBonus.objects.create()
                 CalculateBonus = (RemainAmount / 100) * 0.5
 
@@ -311,6 +315,10 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
             obj.save()
 
             if Reference1 or Reference2:
+                if ReferenceBonus.objects.filter(
+                    Loan=CurrentLoanID, InstallmentDate__month=Month
+                ).exists():
+                    return
                 secondary_obj = ReferenceBonus.objects.create()
                 CalculateBonus = (RemainAmount / 100) * 0.5
 
