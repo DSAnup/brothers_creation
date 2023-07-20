@@ -15,6 +15,8 @@ class LoanerAdmin(admin.ModelAdmin):
         ("profilePic"),
     ]
     list_display = ("userName", "firstName", "mobile", "address")
+    list_filter = ["userName"]
+    search_fields = ["userName", "mobile"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -56,6 +58,8 @@ class LoanAdmin(admin.ModelAdmin):
     )
 
     ordering = ["LoanNumber"]
+    list_filter = ["Loaner"]
+    search_fields = ["Loaner__userName", "Reference1__userName", "Reference2__userName"]
 
     def LoanNumberPretify(self, obj):
         return f"000{obj.LoanNumber}"
@@ -101,6 +105,8 @@ class LoanReturnAdmin(admin.ModelAdmin):
         ("ReturnDate", "ReturnAmount"),
     ]
     list_display = ("Loan", "ReturnAmount", "ReturnDate")
+    list_filter = ["Loan"]
+    search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -189,6 +195,8 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
         "AnyDiscount",
         "Comments",
     )
+    list_filter = ["Loan"]
+    search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
 
     def save_model(self, request, obj, form, change):
         Cleaneddate = form.cleaned_data["InstallmentMonth"]
@@ -346,6 +354,13 @@ class ReferenceBonusAdmin(admin.ModelAdmin):
         "Paymonth",
         "isPaid",
     )
+    list_filter = ["Loan"]
+    search_fields = [
+        "Loan__LoanNumber",
+        "Loan__Loaner__userName",
+        "Reference1__userName",
+        "Reference2__userName",
+    ]
 
     def Paymonth(self, obj):
         return DateFormat(obj.PaidMonth).format("F")
