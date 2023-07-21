@@ -139,6 +139,8 @@ def index(request):
 
     RefBonusUnPaidAmountSum = RefBonusUnPaidAmountSum1 + RefBonusUnPaidAmountSum2
 
+    InterestAfterBonusGiven = InterestRecievedAmountSum - RefBonusPaidAmountSum
+
     TotalBalance = (
         totalAmountShareHolder
         - (LoanAmountActiveSum + LoanAmountClosedSum)
@@ -162,6 +164,7 @@ def index(request):
         "LoanAmountClosedSum": LoanAmountClosedSum,
         "LoanReturnAmountSum": LoanReturnAmountSum,
         "InterestRecievedAmountSum": InterestRecievedAmountSum,
+        "InterestAfterBonusGiven": InterestAfterBonusGiven,
         "RefBonusPaidAmountSum": RefBonusPaidAmountSum,
         "RefBonusUnPaidAmountSum": RefBonusUnPaidAmountSum,
         "TotalBalance": TotalBalance,
