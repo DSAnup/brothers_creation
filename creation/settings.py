@@ -29,7 +29,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-*0o_n+h9sdm+re14ugfh=shm5!^!amn!r-__a)9qkc4-1rh-e9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ["server.bestcloudns.biz", "127.0.0.1", "brothers.anupmondal.me"]
 
@@ -38,6 +37,11 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+if domain_name == ALLOWED_HOSTS[0]:
+    DEBUG = False
+else:
+    DEBUG = True
 
 # Application definition
 
