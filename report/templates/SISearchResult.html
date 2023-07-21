@@ -1,0 +1,37 @@
+{% extends "master.html" %} 
+{% block title %} Share Holder Monthly Installment {% endblock %}
+{% block content %} 
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Share Holder Monthly Installment History <span style="float:right"><a href="/report/SISearch">Back</a><span></h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Installment Date</th>
+                            <th>Mobile</th>
+                            <th>Paid Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stu in ShareHolderList %}
+                            <tr>
+                                <td>{{stu.shareHolder}}</td>
+                                <td>{{stu.InstallmentDate}}</td>
+                                <td>{{stu.shareHolder.mobile}}</td>
+                                <td>{{stu.InstallmentAmount}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

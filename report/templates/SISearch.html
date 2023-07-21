@@ -1,0 +1,51 @@
+{% extends "master.html" %} 
+{% block title %} Search ShareHolder Installment{% endblock %}
+{% block content %}
+
+       <!-- DataTales Example -->
+       <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Share Holder Search Report</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form method="POST" action="{% url 'SISearchResult' %}">
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                        <label for="month">Select Month</label>
+                        <select class="form-control" id="month" name="month">
+                            {% for month in MonthList %}
+                                <option value="{{ month.value }}" {% if month.value == CurrentMonth %}selected{% endif %}>
+                                    {{ month.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="year">Select Year</label>
+                        <select class="form-control" id="year" name="year">
+                            {% for year in YearList %}
+                                <option value="{{ year }}" {% if year == CurrentYear %}selected{% endif %}>
+                                    {{ year }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" style="float:right">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Initialize the datepicker
+            $('#datepicker').datepicker({
+                format: 'yyyy-mm-dd',  // Set your desired date format here
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+{% endblock %}

@@ -43,8 +43,9 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     "debug_toolbar",
-    "shareholder.apps.ShareholderConfig",
+    "shareholder",
     "loaner",
+    "report",
     "bootstrap5",
     "ckeditor",
     "django.contrib.admin",
@@ -72,7 +73,7 @@ ROOT_URLCONF = "creation.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
