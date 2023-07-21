@@ -38,11 +38,6 @@ def calculate_sum(query):
 # Create your views here.
 def index(request):
     totalShareHolder = ShareHolder.objects.all().count()
-    total_recieable_shareholder_installment_count = (
-        ShareHolderInstallment.objects.filter(
-            InstallmentDate__month=current_month, InstallmentDate__year=current_year
-        ).count()
-    )
     totalShareNo = ShareHolderSetting.objects.aggregate(sum=Sum("shareNumber"))["sum"]
     totalRegistrationAmount = ShareHolderSetting.objects.aggregate(
         sum=Sum("registrationAmount")
@@ -122,7 +117,6 @@ def sMonthlyPaid(request):
             """
     mydata = custom_query(myquery)
     getStudentList = ShareHolder.objects.values_list("userName", flat=True)
-    column_list = list(getStudentList)
 
     template = loader.get_template("sMonthlyPaid.html")
     context = {
@@ -151,24 +145,6 @@ def sMonthlyUnPaid(request):
     return HttpResponse(template.render(context, request))
 
 
-def loanerList(request):
-    LoanerList = Loaner.objects.all()
-
-    return render(request, "loaner/loaner.html", {"LoanerList": LoanerList})
-
-
-def loanList(request):
-    loanList = Loan.objects.all()
-
-    return render(request, "loaner/loanList.html", {"loanList": loanList})
-
-
-def LoanHistory(request, id):
-    LoanHistory = LoanReturn.objects.filter(Loan=id)
-
-    return render(request, "loaner/LoanHistory.html", {"LoanHistory": LoanHistory})
-
-
 def ShareholderInstallmentHistory(request, id):
     InstallmentList = ShareHolderInstallment.objects.filter(shareHolder=id)
 
@@ -177,23 +153,3 @@ def ShareholderInstallmentHistory(request, id):
         "InstallmentList": InstallmentList,
     }
     return HttpResponse(template.render(context, request))
-
-
-def LoanInstallmentHistory(request, id):
-    LoanInstallmentHistory = LoanMonthlyInstallment.objects.filter(Loan=id)
-
-    return render(
-        request,
-        "loaner/LoanInstallmentHistory.html",
-        {"LoanInstallmentHistory": LoanInstallmentHistory},
-    )
-
-
-def ReferenceBonusList(request):
-    ReferenceBonusList = ReferenceBonus.objects.all()
-
-    return render(
-        request,
-        "loaner/ReferenceBonusList.html",
-        {"ReferenceBonusList": ReferenceBonusList},
-    )
