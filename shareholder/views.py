@@ -78,6 +78,74 @@ def index(request):
             500 * totalShareNo
         ) - current_month_received_shareholder_installment
 
+    LoanerCount = Loaner.objects.all().count()
+    if LoanerCount is None:
+        LoanerCount = 0
+
+    LoanActiveCount = Loan.objects.filter(isClosed=0).count()
+    if LoanActiveCount is None:
+        LoanActiveCount = 0
+
+    LoanClosedCount = Loan.objects.filter(isClosed=1).count()
+    if LoanClosedCount is None:
+        LoanClosedCount = 0
+
+    LoanAmountActiveSum = Loan.objects.filter(isClosed=0).aggregate(
+        sum=Sum("LoanAmount")
+    )["sum"]
+    if LoanAmountActiveSum is None:
+        LoanAmountActiveSum = 0
+
+    LoanAmountClosedSum = Loan.objects.filter(isClosed=1).aggregate(
+        sum=Sum("LoanAmount")
+    )["sum"]
+    if LoanAmountClosedSum is None:
+        LoanAmountClosedSum = 0
+
+    LoanReturnAmountSum = LoanReturn.objects.aggregate(sum=Sum("ReturnAmount"))["sum"]
+    if LoanReturnAmountSum is None:
+        LoanReturnAmountSum = 0
+
+    InterestRecievedAmountSum = LoanMonthlyInstallment.objects.aggregate(
+        sum=Sum("InstallmentAmount")
+    )["sum"]
+    if InterestRecievedAmountSum is None:
+        InterestRecievedAmountSum = 0
+
+    RefBonusPaidAmountSum1 = ReferenceBonus.objects.filter(isPaid=1).aggregate(
+        sum=Sum("BonusAmount1")
+    )["sum"]
+    if RefBonusPaidAmountSum1 is None:
+        RefBonusPaidAmountSum1 = 0
+    RefBonusPaidAmountSum2 = ReferenceBonus.objects.filter(isPaid=1).aggregate(
+        sum=Sum("BonusAmount2")
+    )["sum"]
+    if RefBonusPaidAmountSum2 is None:
+        RefBonusPaidAmountSum2 = 0
+
+    RefBonusPaidAmountSum = RefBonusPaidAmountSum1 + RefBonusPaidAmountSum2
+
+    RefBonusUnPaidAmountSum1 = ReferenceBonus.objects.filter(isPaid=0).aggregate(
+        sum=Sum("BonusAmount1")
+    )["sum"]
+    if RefBonusUnPaidAmountSum1 is None:
+        RefBonusUnPaidAmountSum1 = 0
+
+    RefBonusUnPaidAmountSum2 = ReferenceBonus.objects.filter(isPaid=0).aggregate(
+        sum=Sum("BonusAmount2")
+    )["sum"]
+    if RefBonusUnPaidAmountSum2 is None:
+        RefBonusUnPaidAmountSum2 = 0
+
+    RefBonusUnPaidAmountSum = RefBonusUnPaidAmountSum1 + RefBonusUnPaidAmountSum2
+
+    TotalBalance = (
+        totalAmountShareHolder
+        - (LoanAmountActiveSum + LoanAmountClosedSum)
+        + (InterestRecievedAmountSum - RefBonusPaidAmountSum)
+        + LoanReturnAmountSum
+    )
+
     template = loader.get_template("index.html")
 
     context = {
@@ -87,6 +155,16 @@ def index(request):
         "current_month_received_shareholder_installment": current_month_received_shareholder_installment,
         "total_receivable_amount": total_receivable_amount,
         "totalAmountShareHolder": totalAmountShareHolder,
+        "LoanerCount": LoanerCount,
+        "LoanActiveCount": LoanActiveCount,
+        "LoanClosedCount": LoanClosedCount,
+        "LoanAmountActiveSum": LoanAmountActiveSum,
+        "LoanAmountClosedSum": LoanAmountClosedSum,
+        "LoanReturnAmountSum": LoanReturnAmountSum,
+        "InterestRecievedAmountSum": InterestRecievedAmountSum,
+        "RefBonusPaidAmountSum": RefBonusPaidAmountSum,
+        "RefBonusUnPaidAmountSum": RefBonusUnPaidAmountSum,
+        "TotalBalance": TotalBalance,
     }
 
     return HttpResponse(template.render(context, request))
