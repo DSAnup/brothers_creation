@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .admin import ShareHolderModelAutocomplete
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -19,5 +20,10 @@ urlpatterns = [
         "sMonthlyUnPaid/",
         views.sMonthlyUnPaid,
         name="sMonthlyUnPaid",
+    ),
+    path(
+        "autocomplete/",
+        ShareHolderModelAutocomplete.as_view(),
+        name="shareHolder-autocomplete",
     ),
 ]

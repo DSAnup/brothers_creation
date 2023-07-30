@@ -3,6 +3,18 @@ from .models import *
 from django.utils import timezone
 from django.contrib import messages
 
+from dal import autocomplete
+
+
+class ShareHolderModelAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = ShareHolder.objects.all()
+
+        if self.q:
+            qs = qs.filter(firstName__istartswith=self.q)
+
+        return qs
+
 
 class ShareHolderAdmin(admin.ModelAdmin):
     fields = [
@@ -61,6 +73,7 @@ class ShareHolderSettingAdmin(admin.ModelAdmin):
         "shareHolder__firstName",
     ]
     list_per_page = 30
+    autocomplete_fields = ["shareHolder"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -108,6 +121,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "shareHolder__firstName",
     ]
     list_per_page = 30
+    autocomplete_fields = ["shareHolder"]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "shareHolder":

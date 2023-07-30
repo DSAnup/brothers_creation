@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "report",
     "bootstrap5",
     "ckeditor",
+    "dal",
+    "dal_select2",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
