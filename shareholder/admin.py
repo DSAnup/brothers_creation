@@ -8,7 +8,7 @@ class ShareHolderAdmin(admin.ModelAdmin):
     fields = [
         ("userName", "password"),
         ("firstName", "lastName"),
-        ("mobile", "isMember"),
+        ("mobile", "isMember", "isActive"),
         ("address", "profilePic"),
     ]
     list_display = ("userName", "firstName", "mobile")
@@ -108,6 +108,11 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "shareHolder__firstName",
     ]
     list_per_page = 30
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "shareHolder":
+            kwargs["queryset"] = ShareHolder.objects.filter(isActive=1)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
         current_datetime = timezone.now()

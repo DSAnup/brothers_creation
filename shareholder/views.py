@@ -37,7 +37,13 @@ def calculate_sum(query):
 
 # Create your views here.
 def index(request):
+    totalShareHolderActive = ShareHolder.objects.filter(isActive=1).count()
     totalShareHolder = ShareHolder.objects.all().count()
+    totalShareNoActive = (
+        ShareHolderSetting.objects.select_related("shareHolder")
+        .filter(shareHolder__isActive=1)
+        .aggregate(sum=Sum("shareNumber"))["sum"]
+    )
     totalShareNo = ShareHolderSetting.objects.aggregate(sum=Sum("shareNumber"))["sum"]
     totalRegistrationAmount = ShareHolderSetting.objects.aggregate(
         sum=Sum("registrationAmount")
@@ -65,18 +71,21 @@ def index(request):
                         WHERE MONTH(SI.InstallmentDate) = MONTH(CURDATE())
                             AND YEAR(SI.InstallmentDate) = YEAR(CURDATE())
                     )
+                    AND S.isActive = 1
     """
 
     total_unpaid_shareNo = calculate_sum(myquery_unpaid_shareNo)
-
-    if timezone.now().date() > margin_time:
-        total_receivable_amount = (500 * total_unpaid_shareNo) + (
-            (50 * total_unpaid_shareNo)
-        )
+    if total_unpaid_shareNo is None:
+        total_receivable_amount = 0
     else:
-        total_receivable_amount = (
-            500 * totalShareNo
-        ) - current_month_received_shareholder_installment
+        if timezone.now().date() > margin_time:
+            total_receivable_amount = (500 * total_unpaid_shareNo) + (
+                (50 * total_unpaid_shareNo)
+            )
+        else:
+            total_receivable_amount = (
+                500 * totalShareNo
+            ) - current_month_received_shareholder_installment
 
     LoanerCount = Loaner.objects.all().count()
     if LoanerCount is None:
@@ -168,6 +177,8 @@ def index(request):
         "RefBonusPaidAmountSum": RefBonusPaidAmountSum,
         "RefBonusUnPaidAmountSum": RefBonusUnPaidAmountSum,
         "TotalBalance": TotalBalance,
+        "totalShareHolderActive": totalShareHolderActive,
+        "totalShareNoActive": totalShareNoActive,
     }
 
     return HttpResponse(template.render(context, request))
