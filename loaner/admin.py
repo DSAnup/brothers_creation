@@ -5,6 +5,17 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
 from django.shortcuts import get_object_or_404
+from dal import autocomplete
+
+
+class LoanerModelAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Loaner.objects.all()
+
+        if self.q:
+            qs = qs.filter(firstName__istartswith=self.q)
+
+        return qs
 
 
 class LoanerAdmin(admin.ModelAdmin):
@@ -62,6 +73,7 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = ["Loaner"]
     search_fields = ["Loaner__userName", "Reference1__userName", "Reference2__userName"]
     list_per_page = 30
+    autocomplete_fields = ["Loaner"]
 
     def LoanNumberPretify(self, obj):
         return f"000{obj.LoanNumber}"
@@ -110,6 +122,7 @@ class LoanReturnAdmin(admin.ModelAdmin):
     list_filter = ["Loan"]
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
     list_per_page = 30
+    autocomplete_fields = ["Loan"]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -201,6 +214,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
     list_filter = ["Loan"]
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
     list_per_page = 30
+    autocomplete_fields = ["Loan"]
 
     def save_model(self, request, obj, form, change):
         Cleaneddate = form.cleaned_data["InstallmentMonth"]
@@ -374,6 +388,7 @@ class ReferenceBonusAdmin(admin.ModelAdmin):
         "Reference2__userName",
     ]
     list_per_page = 30
+    autocomplete_fields = ["Loan"]
 
     def Paymonth(self, obj):
         return DateFormat(obj.PaidMonth).format("F")

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .admin import LoanerModelAutocomplete
 
 urlpatterns = [
     path(
@@ -27,5 +28,10 @@ urlpatterns = [
         "ReferenceBonusList/",
         views.ReferenceBonusList,
         name="ReferenceBonusList",
+    ),
+    path(
+        "autocomplete/",
+        LoanerModelAutocomplete.as_view(),
+        name="shareHolder-autocomplete",
     ),
 ]
