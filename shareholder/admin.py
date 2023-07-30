@@ -113,7 +113,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "haveDiscount",
         "comments",
     )
-    list_filter = ["shareHolder"]
+    list_filter = ["shareHolder", "InstallmentDate"]
     search_fields = [
         "shareHolder__userName",
         "shareHolder__lastName",
