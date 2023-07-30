@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "shareholder",
     "loaner",
     "report",
+    "general",
     "bootstrap5",
     "ckeditor",
     "dal",
