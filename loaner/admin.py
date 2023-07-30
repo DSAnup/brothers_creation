@@ -70,7 +70,7 @@ class LoanAdmin(admin.ModelAdmin):
     )
 
     ordering = ["LoanNumber"]
-    list_filter = ["Loaner"]
+    list_filter = ["Loaner", "LoanGivenDate"]
     search_fields = ["Loaner__userName", "Reference1__userName", "Reference2__userName"]
     list_per_page = 30
     autocomplete_fields = ["Loaner"]
@@ -119,7 +119,7 @@ class LoanReturnAdmin(admin.ModelAdmin):
         ("ReturnDate", "ReturnAmount"),
     ]
     list_display = ("Loan", "ReturnAmount", "ReturnDate")
-    list_filter = ["Loan"]
+    list_filter = ["Loan", "ReturnDate"]
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
     list_per_page = 30
     autocomplete_fields = ["Loan"]
@@ -211,7 +211,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
         "AnyDiscount",
         "Comments",
     )
-    list_filter = ["Loan"]
+    list_filter = ["Loan", "InstallmentDate"]
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
     list_per_page = 30
     autocomplete_fields = ["Loan"]
