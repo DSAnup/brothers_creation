@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 from django.utils import timezone
 from django.contrib import messages
-from .admin import *
+from shareholder.admin import *
 
 # Register your models here.
 
