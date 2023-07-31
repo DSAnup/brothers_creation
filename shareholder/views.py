@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from .models import *
 from loaner.models import *
+from general.models import *
 from django.db.models import Sum
 
 from django.utils import timezone
@@ -150,11 +151,16 @@ def index(request):
 
     InterestAfterBonusGiven = InterestRecievedAmountSum - RefBonusPaidAmountSum
 
+    ExpenseAmountSum = Expense.objects.aggregate(sum=Sum("ExpenseAmount"))["sum"]
+    if ExpenseAmountSum is None:
+        ExpenseAmountSum = 0
+
     TotalBalance = (
         totalAmountShareHolder
         - (LoanAmountActiveSum + LoanAmountClosedSum)
         + (InterestRecievedAmountSum - RefBonusPaidAmountSum)
         + LoanReturnAmountSum
+        - ExpenseAmountSum
     )
 
     template = loader.get_template("index.html")
@@ -179,6 +185,7 @@ def index(request):
         "TotalBalance": TotalBalance,
         "totalShareHolderActive": totalShareHolderActive,
         "totalShareNoActive": totalShareNoActive,
+        "ExpenseAmountSum": ExpenseAmountSum,
     }
 
     return HttpResponse(template.render(context, request))
