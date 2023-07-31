@@ -1,0 +1,37 @@
+{% extends "master.html" %} 
+{% block title %} Expense List {% endblock %}
+{% block content %} 
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Expens List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Expense By</th>
+                            <th>Expense Purpose</th>
+                            <th>Expense Amount</th>
+                            <th>Expense Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stu in ExpenseList %}
+                            <tr>
+                                <td>{{stu.ShareHolder}}</td>
+                                <td>{{stu.ExpensePurpose}}</td>
+                                <td>{{stu.ExpenseAmount}}</td>
+                                <td>{{stu.ExpenseDate}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
