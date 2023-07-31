@@ -26,4 +26,15 @@ class Expense(models.Model):
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.ExpensePurpose
+        return self.ExpensePurposeclass
+
+
+class Rules(models.Model):
+    Rules = RichTextField(null=False, blank=False)
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return "Update Rules"
