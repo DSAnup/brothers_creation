@@ -108,7 +108,11 @@ if domain_name == ALLOWED_HOSTS[0]:
             "PASSWORD": "anup_2023",
             "PORT": "3306",
             "HOST": "localhost",
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+            "OPTIONS": {
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+                "charset": "utf8mb4",
+                "use_unicode": True,
+            },
         }
     }
 else:
@@ -120,7 +124,11 @@ else:
             "PASSWORD": "",
             "HOST": "127.0.0.1",
             "PORT": "3306",
-            "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+            "OPTIONS": {
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+                "charset": "utf8mb4",
+                "use_unicode": True,
+            },
         }
     }
 
