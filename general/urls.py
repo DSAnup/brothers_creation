@@ -1,12 +1,17 @@
 from django.urls import path
 
 from . import views
-from .admin import LoanerModelAutocomplete
+from .admin import ShareHolderModelAutocomplete
 
 urlpatterns = [
     path(
         "expenseList/",
         views.expenseList,
         name="expenseList",
-    )
+    ),
+    path(
+        "autocomplete/",
+        ShareHolderModelAutocomplete.as_view(),
+        name="shareHolder-autocomplete",
+    ),
 ]
