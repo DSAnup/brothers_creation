@@ -112,7 +112,7 @@ class LoanMonthlyInstallment(models.Model):
         default=timezone.now, verbose_name="Installment Paid Date"
     )
     InstallmentMonth = models.DateField(
-        default=timezone.now().replace(day=1), verbose_name="Installment Month"
+        default=timezone.now, verbose_name="Installment Month"
     )
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
@@ -157,9 +157,7 @@ class ReferenceBonus(models.Model):
     BonusGivenDate = models.DateField(
         default=timezone.now, verbose_name="Bonus Given Date"
     )
-    PaidMonth = models.DateField(
-        default=timezone.now().replace(day=1), verbose_name="Paid Month"
-    )
+    PaidMonth = models.DateField(default=timezone.now, verbose_name="Paid Month")
     isPaid = models.BooleanField(default=False, verbose_name="Is Paid")
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
