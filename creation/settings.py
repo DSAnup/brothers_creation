@@ -40,6 +40,17 @@ INTERNAL_IPS = [
 
 if domain_name == ALLOWED_HOSTS[0]:
     DEBUG = False
+    SECURE_HSTS_SECONDS = 31536000  # Set the HSTS header to expire in 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains in HSTS
+    SECURE_HSTS_PRELOAD = (
+        True  # Indicate that your site should be included in the HSTS preload list
+    )
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSRF_COOKIE_SECURE = True
+
 else:
     DEBUG = True
 
