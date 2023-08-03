@@ -1,5 +1,5 @@
 {% extends "master.html" %} 
-{% block title %} Share Holder Monthly Installment {% endblock %}
+{% block title %} Loan Monthly Installment {% endblock %}
 {% block content %} 
 
 
@@ -7,8 +7,8 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                Share Holder {{ month_name }} Installment Report 
-                <span style="float:right; margin-right:5px"><a href="/report/SISearch">Back</a></span>
+                Loan {{ month_name }} Installment Report 
+                <span style="float:right; margin-right:5px"><a href="/report/SLSearch">Back</a></span>
                 <span style="margin-left:10px"><a onclick="printElement('dataTable1')"><i class="fas fa-fw fa-print"></i></a></span>
             </h6>
         </div>
@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for stu in ShareHolderInstallmentReport %}
+                        {% for stu in LoanInstallmentReport %}
                             <tr>
                                 <td>{{stu.userName}}</td>
                                 <td>{{stu.Idate}}</td>
