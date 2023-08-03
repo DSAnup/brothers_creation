@@ -14,4 +14,9 @@ urlpatterns = [
         ShareHolderModelAutocomplete.as_view(),
         name="shareHolder-autocomplete",
     ),
+    path(
+        "RuleDisplay/",
+        views.RuleDisplay,
+        name="RuleDisplay",
+    ),
 ]

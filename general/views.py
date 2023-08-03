@@ -13,3 +13,12 @@ def expenseList(request):
         "ExpenseList": ExpenseList,
     }
     return HttpResponse(template.render(context, request))
+
+
+def RuleDisplay(request):
+    Rule = Rules.objects.all()
+    template = loader.get_template("Rules.html")
+    context = {
+        "Rule": Rule,
+    }
+    return HttpResponse(template.render(context, request))
