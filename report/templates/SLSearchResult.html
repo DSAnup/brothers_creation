@@ -18,8 +18,9 @@
                     <thead>
                         <tr>
                             <th>User Name</th>
-                            <th>Installment Date</th>
                             <th>Mobile</th>
+                            <th>Loan Taken Date</th>
+                            <th>Installment Date</th>
                             <th>Paid Amount</th>
                         </tr>
                     </thead>
@@ -27,8 +28,9 @@
                         {% for stu in LoanInstallmentReport %}
                             <tr>
                                 <td>{{stu.userName}}</td>
-                                <td>{{stu.Idate}}</td>
                                 <td>{{stu.mobile}}</td>
+                                <td>{{stu.LoanGivenDate}}</td>
+                                <td>{{stu.Idate}}</td>
                                 <td> {{stu.amount}}</td>
                             </tr>
                         {% endfor %}
