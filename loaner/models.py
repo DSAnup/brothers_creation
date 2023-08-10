@@ -100,19 +100,19 @@ class LoanMonthlyInstallment(models.Model):
         Loan, on_delete=models.DO_NOTHING, verbose_name="Loan Account"
     )
     InstallmentAmount = models.IntegerField(
-        null=False, blank=False, verbose_name="Installment Amount"
+        null=False, blank=False, verbose_name="Interest Amount"
     )
     InstallmentPenalty = models.IntegerField(
-        null=False, blank=False, verbose_name="Installment Penalty Rate", default="0"
+        null=False, blank=False, verbose_name="Interest Penalty Rate", default="0"
     )
     AnyDiscount = models.IntegerField(
         null=False, blank=False, verbose_name="Any Discount", default="0"
     )
     InstallmentDate = models.DateField(
-        default=timezone.now, verbose_name="Installment Paid Date"
+        default=timezone.now, verbose_name="Interest Paid Date"
     )
     InstallmentMonth = models.DateField(
-        default=timezone.now, verbose_name="Installment Month"
+        default=timezone.now, verbose_name="Interest Month"
     )
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
@@ -122,6 +122,11 @@ class LoanMonthlyInstallment(models.Model):
 
     def __str__(self):
         return str(self.Loan)
+
+    def Loan_Amount(self):
+        return self.Loan.LoanAmount
+
+    Loan_Amount.short_description = "Loan Amount"
 
 
 class ReferenceBonus(models.Model):

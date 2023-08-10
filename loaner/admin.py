@@ -204,9 +204,10 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
     ]
     list_display = (
         "Loan",
-        "InstallmentMonth",
-        "InstallmentDate",
+        "Loan_Amount",
         "InstallmentAmount",
+        "interest_month",
+        "InstallmentDate",
         "InstallmentPenalty",
         "AnyDiscount",
         "Comments",
@@ -215,6 +216,11 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
     list_per_page = 30
     autocomplete_fields = ["Loan"]
+
+    def interest_month(self, obj):
+        return obj.InstallmentMonth.strftime("%B")
+
+    interest_month.short_description = "Interest Month"
 
     def save_model(self, request, obj, form, change):
         Cleaneddate = form.cleaned_data["InstallmentMonth"]
