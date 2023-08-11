@@ -105,6 +105,10 @@ def index(request):
     if LoanAmountActiveSum is None:
         LoanAmountActiveSum = 0
 
+    InterestRecievedByLoanAmount = LoanMonthlyInstallment.objects.select_related(
+        "Loan"
+    ).aggregate(sum=Sum("Loan__LoanAmount"))["sum"]
+
     LoanAmountClosedSum = Loan.objects.filter(isClosed=1).aggregate(
         sum=Sum("LoanAmount")
     )["sum"]
@@ -179,6 +183,7 @@ def index(request):
         "TotalBalance": TotalBalance,
         "totalShareHolderActive": totalShareHolderActive,
         "totalShareNoActive": totalShareNoActive,
+        "InterestRecievedByLoanAmount": InterestRecievedByLoanAmount,
     }
 
     return HttpResponse(template.render(context, request))
