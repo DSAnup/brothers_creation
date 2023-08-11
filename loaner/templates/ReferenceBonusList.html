@@ -13,6 +13,7 @@
                     <thead>
                         <tr>
                             <th>Loan Number</th>
+                            <th>Loan Amount</th>
                             <th>Reference 1</th>
                             <th>Amount</th>
                             <th>Reference 2</th>
@@ -26,6 +27,7 @@
                         {% for n in ReferenceBonusList %}
                             <tr>
                                 <td>{{n.Loan}}</td>
+                                <td>{{n.Loan.LoanAmount}}</td>
                                 <td>{{n.Reference1}}</td>
                                 <td>{{n.BonusAmount1}}</td>
                                 <td>{{n.Reference2}}</td>
