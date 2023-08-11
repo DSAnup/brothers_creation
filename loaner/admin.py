@@ -284,8 +284,8 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
                 if Reference1 and Reference2:
                     DivideBonus = CalculateBonus / 2
                     reminder = CalculateBonus % 2
-                    if reminder == 1:
-                        secondary_obj.BonusAmount1 = DivideBonus + reminder
+                    if int(reminder) == 1:
+                        secondary_obj.BonusAmount1 = DivideBonus + 1
                     else:
                         secondary_obj.BonusAmount1 = DivideBonus
                     secondary_obj.BonusAmount2 = DivideBonus
