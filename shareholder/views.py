@@ -159,6 +159,8 @@ def index(request):
     if ExpenseAmountSum is None:
         ExpenseAmountSum = 0
 
+    TotalCollection = totalAmountShareHolder + InterestAfterBonusGiven
+
     TotalBalance = (
         totalAmountShareHolder
         - (LoanAmountActiveSum + LoanAmountClosedSum)
@@ -191,6 +193,7 @@ def index(request):
         "totalShareNoActive": totalShareNoActive,
         "ExpenseAmountSum": ExpenseAmountSum,
         "InterestRecievedByLoanAmount": InterestRecievedByLoanAmount,
+        "TotalCollection": TotalCollection,
     }
 
     return HttpResponse(template.render(context, request))
