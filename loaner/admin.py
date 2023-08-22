@@ -371,13 +371,16 @@ class ReferenceBonusAdmin(admin.ModelAdmin):
         "Loan",
         "Reference1",
         "Reference2",
-        "BonusAmount1",
-        "BonusAmount2",
         "PaidMonth",
     )
     fields = [
         readonly_fields,
-        ("BonusGivenDate", "isPaid"),
+        (
+            "BonusGivenDate",
+            "isPaid",
+            "BonusAmount1",
+            "BonusAmount2",
+        ),
     ]
 
     list_display = (
