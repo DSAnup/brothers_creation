@@ -1,0 +1,49 @@
+{% extends "master.html" %} 
+{% block title %} Loan Payment Check List {% endblock %}
+{% block content %} 
+{% load custom_filter %}
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Loan Payment Check List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Loaner</th>
+                            <th>Loan Given Date</th>
+                            <th>Last Installment Date</th>
+                            <th>Loan Amount</th>
+                            <th>Interest Pay</th>
+                            <th>Day Last Paid</th>
+                            <th>Need To Pay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stu in LoanPaymentCheckList %}
+                            <tr>
+                                <td>{{stu.userName}}-000{{stu.id}}</td>
+                                <td>{{stu.LoanGivenDate}}</td>
+                                <td>{{stu.LastInstammentDate}}</td>
+                                <td>{{stu.LoanAmount}}</td>
+                                <td>{{stu.InterestPay}}</td>
+                                <td>{{stu.DaysDiffrenetFromNow}}</td>
+                                <td>
+                                    {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 60 %}
+                                        {% calculateInterest stu.LoanAmount 4 %}
+                                    {% elif stu.DaysDiffrenetFromNow > 60 %}
+                                        {% calculateInterest stu.LoanAmount 5 %}
+                                    {% else %}
+                                        {{stu.InterestPay}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
