@@ -30,6 +30,11 @@ urlpatterns = [
         name="ReferenceBonusList",
     ),
     path(
+        "LoanPaymentCheckList/",
+        views.LoanPaymentCheckList,
+        name="LoanPaymentCheckList",
+    ),
+    path(
         "autocomplete/",
         LoanerModelAutocomplete.as_view(),
         name="shareHolder-autocomplete",

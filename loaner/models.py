@@ -121,7 +121,9 @@ class LoanMonthlyInstallment(models.Model):
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return str(self.Loan)
+        return (
+            str(self.Loan) + " (Loan Given Date : " + str(self.Loan.LoanGivenDate) + ")"
+        )
 
     def Loan_Amount(self):
         return self.Loan.LoanAmount
