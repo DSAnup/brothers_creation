@@ -67,6 +67,7 @@ class ShareHolderInstallment(models.Model):
     InstallmentDate = models.DateField(
         default=timezone.now, verbose_name="Installment Date"
     )
+    MarginDate = models.DateField(default=timezone.now, verbose_name="Margin Date")
     InstallmentAmount = models.IntegerField(null=False, blank=False)
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
