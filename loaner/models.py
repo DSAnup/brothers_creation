@@ -114,6 +114,7 @@ class LoanMonthlyInstallment(models.Model):
     InstallmentMonth = models.DateField(
         default=timezone.now, verbose_name="Interest Month"
     )
+    MarginDate = models.DateField(default=timezone.now, verbose_name="Margin Date")
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
