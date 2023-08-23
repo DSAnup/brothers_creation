@@ -48,10 +48,10 @@ def ReferenceBonusList(request):
 def LoanPaymentCheckList(request):
     def PaymentDayCheck():
         query = f"""
-                SELECT LO.userName, L.id, L.LoanAmount, L.LoanGivenDate, L.InterestPay, (SELECT LI.InstallmentMonth  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1) AS LastInstammentDate,
+                SELECT LO.userName, L.id, L.LoanAmount, L.LoanGivenDate, L.InterestPay, (SELECT LI.InstallmentDate  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1) AS LastInstammentDate,
                 IF(
                     (SELECT LI.InstallmentMonth  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1), 
-                    DATEDIFF(NOW(),  (SELECT LI.InstallmentMonth  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1)), DATEDIFF(NOW(), L.LoanGivenDate)
+                    DATEDIFF(NOW(),  (SELECT LI.MarginDate  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1)), DATEDIFF(NOW(), L.LoanGivenDate)
                 ) AS DaysDiffrenetFromNow
                 FROM loaner_loaner AS LO
                 LEFT JOIN loaner_loan AS L ON LO.id = L.Loaner_id

@@ -17,7 +17,7 @@
                             <th>Last Installment Date</th>
                             <th>Loan Amount</th>
                             <th>Interest Pay</th>
-                            <th>Day Last Paid</th>
+                            <th>Last Pay From Margin Date</th>
                             <th>Need To Pay</th>
                         </tr>
                     </thead>
@@ -32,11 +32,17 @@
                                 <td>{{stu.DaysDiffrenetFromNow}}</td>
                                 <td>
                                     {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 60 %}
-                                        {% calculateInterest stu.LoanAmount 4 %}
+                                        <span style="color:red">
+                                            {% calculateInterest stu.LoanAmount 4 %}
+                                        </span>
                                     {% elif stu.DaysDiffrenetFromNow > 60 %}
-                                        {% calculateInterest stu.LoanAmount 5 %}
+                                        <span style="color:red">
+                                            {% calculateInterest stu.LoanAmount 5 %} (two months plus due)
+                                        </span>
                                     {% else %}
-                                        {{stu.InterestPay}}
+                                        <span style="color:green">
+                                            {{stu.InterestPay}}
+                                        </span>
                                     {% endif %}
                                 </td>
                             </tr>
