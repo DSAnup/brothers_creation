@@ -17,13 +17,11 @@
                             <th>Share Number</th>
                             <th>Installment Amount</th>
                             <th>Last Installment Date</th>
-                            <th>Last Pay From Margin Date</th>
                             <th>Need To Pay</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        {% now "Y-m-d" as current_datetime %}
 
                         {% for stu in SharePaymentCheckList %}
                             <tr>
@@ -31,18 +29,7 @@
                                 <td>{{stu.shareNumber}}</td>
                                 <td>{{stu.installmentAmount}}</td>
                                 <td>
-                                    {% if stu.LastInstammentDate|date:"Y-m-d" > current_datetime %}
-                                        {{stu.LastInstammentDate}} 
-                                    {% else %}
-                                        {{stu.LastInstammentDate}}
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if stu.LastInstammentDate|date:"Y-m-d" > current_datetime %}
-                                        <span style="color:green; font-weight:10px">(Advanced paid till {{stu.LastInstammentDate|date:"F"}})</span>
-                                    {% else %}
-                                        {{stu.DaysDiffrenetFromNow}}
-                                    {% endif %}
+                                    {{stu.LastInstammentDate}} 
                                 </td>
                                 <td>
                                     {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 60 %}
@@ -57,6 +44,13 @@
                                         <span style="color:green">
                                             {{stu.installmentAmount}}
                                         </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if stu.DaysDiffrenetFromNow < 30 %}
+                                        <span style="color:green; font-weight:10px">Paid till - {{stu.LastInstammentDate|date:"F"}}</span>
+                                    {% else %}
+                                        <span style="color:red; font-weight:10px">Last Paid - {{stu.LastInstammentDate|date:"F"}}</span>
                                     {% endif %}
                                 </td>
                             </tr>
