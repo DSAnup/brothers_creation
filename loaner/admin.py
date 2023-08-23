@@ -211,6 +211,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
         "InstallmentPenalty",
         "AnyDiscount",
         "Comments",
+        "MarginDate",
     )
     list_filter = ["Loan", "InstallmentDate"]
     search_fields = ["Loan__LoanNumber", "Loan__Loaner__userName"]
@@ -271,6 +272,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
             obj.UpdatedBy = request.user.id
+            obj.MarginDate = str(Year) + "-" + str(Month) + "-" + str(MarginDay)
             obj.save()
 
             if Reference1 or Reference2:
@@ -336,6 +338,7 @@ class LoanMonthlyInstallmentAdmin(admin.ModelAdmin):
 
             obj.InstallmentAmount = CalculateInterest
             obj.CreatedBy = request.user.id
+            obj.MarginDate = str(Year) + "-" + str(Month) + "-" + str(MarginDay)
             obj.save()
 
             if Reference1 or Reference2:

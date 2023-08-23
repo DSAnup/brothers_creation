@@ -114,6 +114,7 @@ class LoanMonthlyInstallment(models.Model):
     InstallmentMonth = models.DateField(
         default=timezone.now, verbose_name="Interest Month"
     )
+    MarginDate = models.DateField(default=timezone.now, verbose_name="Margin Date")
     Comments = models.TextField(null=True, blank=True)
     CreatedBy = models.IntegerField(null=True, blank=True)
     DateCreated = models.DateTimeField(default=timezone.now)
@@ -121,9 +122,7 @@ class LoanMonthlyInstallment(models.Model):
     UpdatedBy = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return (
-            str(self.Loan) + " (Loan Given Date : " + str(self.Loan.LoanGivenDate) + ")"
-        )
+        return str(self.Loan)
 
     def Loan_Amount(self):
         return self.Loan.LoanAmount
