@@ -1,0 +1,64 @@
+{% extends "master.html" %} 
+{% block title %} Share Holder Monthly Installment {% endblock %}
+{% block content %} 
+{% load PaymentCal %}
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            {% now "F" as current_month %}
+            <h6 class="m-0 font-weight-bold text-primary">Share Holder Payment Check List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Share Number</th>
+                            <th>Installment Amount</th>
+                            <th>Last Installment Date</th>
+                            <th>Day Last Paid</th>
+                            <th>Need To Pay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% now "Y-m-d" as current_datetime %}
+
+                        {% for stu in SharePaymentCheckList %}
+                            <tr>
+                                <td>{{stu.userName}}</td>
+                                <td>{{stu.shareNumber}}</td>
+                                <td>{{stu.installmentAmount}}</td>
+                                <td>
+                                    {% if stu.LastInstammentDate|date:"Y-m-d" > current_datetime %}
+                                        {{stu.LastInstammentDate}} 
+                                    {% else %}
+                                        {{stu.LastInstammentDate}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if stu.LastInstammentDate|date:"Y-m-d" > current_datetime %}
+                                        <span style="color:green; font-weight:10px">(Advanced paid till {{stu.LastInstammentDate|date:"F"}})</span>
+                                    {% else %}
+                                        {{stu.DaysDiffrenetFromNow}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 60 %}
+                                        {% PaymentCal stu.installmentAmount stu.shareNumber 50 %}
+                                    {% elif stu.DaysDiffrenetFromNow > 60 %}
+                                        {% PaymentCal stu.installmentAmount stu.shareNumber 100 %}
+                                    {% else %}
+                                        {{stu.installmentAmount}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

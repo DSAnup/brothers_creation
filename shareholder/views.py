@@ -260,3 +260,35 @@ def ShareholderInstallmentHistory(request, id):
         "InstallmentList": InstallmentList,
     }
     return HttpResponse(template.render(context, request))
+
+
+def SharePaymentCheckList(request):
+    def PaymentDayCheck():
+        query = f"""
+                SELECT S.userName, SS.shareNumber, SS.installmentAmount, S.id, (SELECT SI.InstallmentDate  FROM shareholder_shareholderinstallment AS SI WHERE SI.shareHolder_id = S.id ORDER BY SI.MarginDate DESC LIMIT 1) AS LastInstammentDate,
+                    IF(
+                    (SELECT SI.MarginDate  FROM shareholder_shareholderinstallment AS SI WHERE SI.shareHolder_id = S.id ORDER BY SI.MarginDate DESC LIMIT 1), 
+                    DATEDIFF(NOW(),  (SELECT SI.MarginDate  FROM shareholder_shareholderinstallment AS SI WHERE SI.shareHolder_id = S.id ORDER BY SI.MarginDate DESC LIMIT 1)), DATEDIFF(NOW(), SS.DateCreated)
+                ) AS DaysDiffrenetFromNow
+                FROM shareholder_shareholder AS S
+                LEFT JOIN shareholder_shareholdersetting AS SS ON SS.shareHolder_id = S.id
+                WHERE S.isActive = 1
+                ORDER BY S.userName ASC
+            """
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            results = cursor.fetchall()
+            rows_as_dict = []
+            for row in results:
+                row_dict = dict(zip(columns, row))
+                rows_as_dict.append(row_dict)
+            return rows_as_dict
+
+    SharePaymentCheckList = PaymentDayCheck()
+
+    return render(
+        request,
+        "SharePaymentCheckList.html",
+        {"SharePaymentCheckList": SharePaymentCheckList},
+    )

@@ -111,6 +111,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
         "InstallmentAmount",
         "havePenalty",
         "haveDiscount",
+        "MarginDate",
         "comments",
     )
     list_filter = ["shareHolder", "InstallmentDate"]
@@ -163,6 +164,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
             obj.DateLastUpdated = timezone.now()
             obj.CreatedBy = existing_obj.CreatedBy
             obj.UpdatedBy = request.user.id
+            obj.MarginDate = str(year) + "-" + str(month) + "-10"
             obj.save()
         else:
             if ShareHolderInstallment.objects.filter(
@@ -186,6 +188,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
             obj.CreatedBy = request.user.id
             obj.InstallmentAmount = installmentAmount
             obj.InstallmentDate = form.cleaned_data["InstallmentDate"]
+            obj.MarginDate = str(year) + "-" + str(month) + "-10"
             obj.save()
 
 
