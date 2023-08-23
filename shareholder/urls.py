@@ -22,6 +22,11 @@ urlpatterns = [
         name="sMonthlyUnPaid",
     ),
     path(
+        "SharePaymentCheckList/",
+        views.SharePaymentCheckList,
+        name="SharePaymentCheckList",
+    ),
+    path(
         "autocomplete/",
         ShareHolderModelAutocomplete.as_view(),
         name="shareHolder-autocomplete",
