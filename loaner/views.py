@@ -49,6 +49,7 @@ def LoanPaymentCheckList(request):
     def PaymentDayCheck():
         query = f"""
                 SELECT LO.userName, L.id, L.LoanAmount, L.LoanGivenDate, L.InterestPay, (SELECT LI.InstallmentDate  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1) AS LastInstammentDate,
+                (SELECT LI.MarginDate  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1) AS MarginDate,
                 IF(
                     (SELECT LI.InstallmentMonth  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1), 
                     DATEDIFF(NOW(),  (SELECT LI.MarginDate  FROM loaner_loanmonthlyinstallment AS LI WHERE LI.Loan_id = L.id ORDER BY LI.InstallmentMonth DESC LIMIT 1)), DATEDIFF(NOW(), L.LoanGivenDate)
