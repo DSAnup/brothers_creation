@@ -46,11 +46,17 @@
                                 </td>
                                 <td>
                                     {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 60 %}
-                                        {% PaymentCal stu.installmentAmount stu.shareNumber 50 %}
+                                        <span style="color:red">
+                                            {% PaymentCal stu.installmentAmount stu.shareNumber 50 %}
+                                        </span>
                                     {% elif stu.DaysDiffrenetFromNow > 60 %}
-                                        {% PaymentCal stu.installmentAmount stu.shareNumber 100 %}
+                                        <span style="color:red">
+                                            {% PaymentCal stu.installmentAmount stu.shareNumber 100 %} (two months plus due)
+                                        </span>
                                     {% else %}
-                                        {{stu.installmentAmount}}
+                                        <span style="color:green">
+                                            {{stu.installmentAmount}}
+                                        </span>
                                     {% endif %}
                                 </td>
                             </tr>
