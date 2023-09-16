@@ -11,6 +11,7 @@ whitenoise = "*"
 django-bootstrap-v5 = "*"
 django-ckeditor = "*"
 django-autocomplete-light = "*"
+pymysql = "*"
 
 [dev-packages]
 

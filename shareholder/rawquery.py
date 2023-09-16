@@ -11,6 +11,7 @@ from django.utils import timezone
 from datetime import date, datetime
 
 from django.db import connection
+
 current_month = timezone.now().month
 current_year = timezone.now().year
 
@@ -199,15 +200,72 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+import time
+
+
 def shareholder(request):
+    start_time = time.time()
+    myquery = """
+                SELECT PS.*, PSSS.shareNumber 
+                FROM shareholder_shareholder AS PS
+                LEFT JOIN shareholder_shareholdersetting AS PSSS ON PS.id = PSSS.shareholder_id
+            """
+    mydata = custom_query(myquery)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Query execution time: {elapsed_time} seconds")
+
+    start_time = time.time()
     getShareHolderList = ShareHolderSetting.objects.select_related(
         "shareHolder"
     ).annotate(
         full_name=Concat("shareHolder__firstName", Value(" "), "shareHolder__lastName")
     )
+    end_time = time.time()
+    elapsed_time = end_time - start_time
 
+    print(f"Query execution time Django Format: {elapsed_time} seconds")
+    start_time = time.time()
+    myquery_unpaid_shareNo = """
+        SELECT SUM(SS.shareNumber) AS sumunpaid
+                FROM shareholder_shareholder AS S
+                left join shareholder_shareholdersetting AS SS ON SS.shareHolder_id = S.id
+                WHERE S.id NOT IN (
+                    SELECT SI.shareholder_id
+                    FROM shareholder_shareholderinstallment AS SI
+                        WHERE MONTH(SI.InstallmentDate) = MONTH(CURDATE())
+                            AND YEAR(SI.InstallmentDate) = YEAR(CURDATE())
+                    )
+                    AND S.isActive = 1
+    """
+
+    total_unpaid_shareNo = calculate_sum(myquery_unpaid_shareNo)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Query execution time 2: {elapsed_time} seconds")
+    start_time = time.time()
+    getUnpaidShareNo = (
+        ShareHolderSetting.objects.select_related("shareHolder")
+        .exclude(
+            shareHolder__id__in=ShareHolderInstallment.objects.values(
+                "shareHolder_id"
+            ).filter(
+                InstallmentDate__month=datetime.now().month,
+                InstallmentDate__year=datetime.now().year,
+            ),
+            shareHolder__isActive=1,
+        )
+        .aggregate(sum=Sum("shareNumber"))
+    )
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Query execution time Django Format 2: {elapsed_time} seconds")
     template = loader.get_template("shareholder.html")
-    context = {"getShareHolderList": list(getShareHolderList)}
+    context = {"myList": list(getShareHolderList), "result": getShareHolderList}
     return HttpResponse(template.render(context, request))
 
 
