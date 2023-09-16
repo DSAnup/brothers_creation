@@ -11,6 +11,7 @@ from django.utils import timezone
 from datetime import date, datetime
 
 from django.db import connection
+
 current_month = timezone.now().month
 current_year = timezone.now().year
 
@@ -251,7 +252,9 @@ def sMonthlyUnPaid(request):
 
 
 def ShareholderInstallmentHistory(request, id):
-    InstallmentList = ShareHolderInstallment.objects.filter(shareHolder=id)
+    InstallmentList = ShareHolderInstallment.objects.filter(shareHolder=id).order_by(
+        "-InstallmentDate"
+    )
 
     template = loader.get_template("ShareholderInstallmentHistory.html")
     context = {
