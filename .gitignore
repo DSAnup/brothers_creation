@@ -2,3 +2,5 @@ media/
 media/images
 requirements.txt
 assets/
+loaner/migations
+shareholder/migations

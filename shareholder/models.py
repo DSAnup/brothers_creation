@@ -93,7 +93,7 @@ class ShareHolderExtraInvestment(models.Model):
     InvestmentDate = models.DateField(
         default=timezone.now, verbose_name="Investment Date"
     )
-    InvestmentAmount = models.IntegerField(null=False, blank=False)
+    InvestmentAmount = models.IntegerField(null=False, blank=False, default=500)
     InvestmentNote = models.CharField(
         null=True,
         blank=True,
