@@ -84,3 +84,27 @@ class ShareHolderInstallment(models.Model):
 
     def __str__(self):
         return self.shareHolder.userName
+
+
+class ShareHolderExtraInvestment(models.Model):
+    ShareHolder = models.ForeignKey(
+        ShareHolder, on_delete=models.PROTECT, null=False, blank=False
+    )
+    InvestmentDate = models.DateField(
+        default=timezone.now, verbose_name="Investment Date"
+    )
+    InvestmentAmount = models.IntegerField(null=False, blank=False)
+    InvestmentNote = models.CharField(
+        null=True,
+        blank=True,
+        default="",
+        max_length=150,
+        verbose_name="Investment Note",
+    )
+    CreatedBy = models.IntegerField(null=True, blank=True)
+    DateCreated = models.DateTimeField(default=timezone.now)
+    DateLastUpdated = models.DateTimeField(default=timezone.now)
+    UpdatedBy = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.ShareHolder.userName
