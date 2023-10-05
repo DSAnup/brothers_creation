@@ -79,7 +79,10 @@ class Loan(models.Model):
 
 class LoanReturn(models.Model):
     Loan = models.ForeignKey(
-        Loan, on_delete=models.DO_NOTHING, verbose_name="Loan Account"
+        Loan,
+        on_delete=models.DO_NOTHING,
+        verbose_name="Loan Account",
+        limit_choices_to={"isClosed": False},
     )
     ReturnAmount = models.IntegerField(
         null=False, blank=False, verbose_name="Return Amount"
@@ -97,7 +100,10 @@ class LoanReturn(models.Model):
 
 class LoanMonthlyInstallment(models.Model):
     Loan = models.ForeignKey(
-        Loan, on_delete=models.DO_NOTHING, verbose_name="Loan Account"
+        Loan,
+        on_delete=models.DO_NOTHING,
+        verbose_name="Loan Account",
+        limit_choices_to={"isClosed": False},
     )
     InstallmentAmount = models.IntegerField(
         null=False, blank=False, verbose_name="Interest Amount"

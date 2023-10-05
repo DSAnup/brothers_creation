@@ -5,17 +5,6 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.utils.dateformat import DateFormat
 from django.shortcuts import get_object_or_404
-from dal import autocomplete
-
-
-class LoanerModelAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Loaner.objects.all()
-
-        if self.q:
-            qs = qs.filter(firstName__istartswith=self.q)
-
-        return qs
 
 
 class LoanerAdmin(admin.ModelAdmin):
