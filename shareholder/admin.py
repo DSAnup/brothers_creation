@@ -172,7 +172,7 @@ class ShareHolderInstallmentAdmin(admin.ModelAdmin):
             if ShareHolderInstallment.objects.filter(
                 shareHolder=obj.shareHolder,
                 InstallmentDate__month=month,
-                InvestmentDate__year=year,
+                InstallmentDate__year=year,
             ).exists():
                 return messages.error(request, "You already paid this month")
             if year == current_year and month == month and day > 10:
