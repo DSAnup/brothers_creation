@@ -1,4 +1,4 @@
-{% extends "master.html" %} 
+{% extends "master.html" %}
 {% block title %} Dashboard {% endblock %}
 {% block content %}
 <!-- Content Row -->
@@ -10,13 +10,12 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Total Share Holder
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{totalShareHolder}} / {{totalShareHolderActive}} <span style="color:green; font-size:14px">(Active)</span>
+              {{totalShareHolder}} / {{totalShareHolderActive}} <span
+                style="color:green; font-size:14px">(Active)</span>
             </div>
           </div>
           <div class="col-auto">
@@ -33,13 +32,11 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Share Number
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{totalShareNo}} / {{totalShareNoActive}}  <span style="color:green; font-size:14px">(Active)</span>
+              {{totalShareNo}} / {{totalShareNoActive}} <span style="color:green; font-size:14px">(Active)</span>
             </div>
           </div>
           <div class="col-auto">
@@ -55,9 +52,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Total Registration Amount
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -71,15 +66,32 @@
       </div>
     </div>
   </div>
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+              Total Extra Investment Amount
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              <span style="font-weight:bolder">৳</span>{{ExtraInvestment}}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Earnings (Monthly) Card Example -->
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-success shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Current Month Received Amount (share holder)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -99,9 +111,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Current Month Receivable Amount (share holder)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -120,13 +130,11 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-success text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
               Total Amount (share holder)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              <span style="font-weight:bolder">৳</span>{{totalAmountShareHolder}}
+              <span style="font-weight:bolder">৳</span>{{totalAmountShareHolder|add:ExtraInvestment}}
             </div>
           </div>
           <div class="col-auto">
@@ -145,9 +153,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loaner Account
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -166,9 +172,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loan Number (Active)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -187,9 +191,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loan Number (Closed)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -208,9 +210,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loan Given Amount (Active)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -229,9 +229,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loan Given Amount (Closed)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -250,9 +248,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Loan Amount Return
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -271,15 +267,14 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Interest Recieved
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
               <span style="font-weight:bolder">৳</span>{{InterestRecievedAmountSum}} <br>
               <span style="font-size:12px; color:red">*** Include penalty (if any)</span><br>
-              <span style="font-size:12px; color:red">Interest Recieved of Loan Amount {{InterestRecievedByLoanAmount}}/= </span>
+              <span style="font-size:12px; color:red">Interest Recieved of Loan Amount
+                {{InterestRecievedByLoanAmount}}/= </span>
             </div>
           </div>
           <div class="col-auto">
@@ -294,9 +289,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Interset After Bonus Given
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -315,9 +308,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Reference Bonus (Paid)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -336,9 +327,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Reference Bonus (UnPaid)
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -361,14 +350,12 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Collection
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              $ {{TotalCollection}} <br>
-              <span style="font-size:12px">(Share Holder Collection + Interest After  Bonus Given)</span>
+              $ {{TotalCollection|add:ExtraInvestment}} <br>
+              <span style="font-size:12px">(Share Holder Collection + Interest After Bonus Given)</span>
             </div>
           </div>
           <div class="col-auto">
@@ -383,9 +370,7 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Somity Expense
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -404,13 +389,11 @@
       <div class="card-body">
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
-            <div
-              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-            >
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
               Total Balance
             </div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              <span style="font-weight:bolder">৳</span>{{TotalBalance}}
+              <span style="font-weight:bolder">৳</span>{{TotalBalance|add:ExtraInvestment}}
             </div>
           </div>
           <div class="col-auto">

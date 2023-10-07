@@ -1,0 +1,38 @@
+{% extends "master.html" %}
+{% block title %} Share Holder Extra Investment {% endblock %}
+{% block content %}
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        {% now "F" as current_month %}
+        <h6 class="m-0 font-weight-bold text-primary">Share Holder Extra Investment</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Installment Date</th>
+                        <th>Mobile</th>
+                        <th>Paid Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stu in myList %}
+                    <tr>
+                        <td>{{stu.ShareHolder.userName}}</td>
+                        <td>{{stu.InvestmentDate}}</td>
+                        <td>{{stu.ShareHolder.mobile}}</td>
+                        <td>{{stu.InvestmentAmount}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

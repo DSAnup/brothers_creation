@@ -169,6 +169,12 @@ def index(request):
         + LoanReturnAmountSum
         - ExpenseAmountSum
     )
+    ExtraInvestment = ShareHolderExtraInvestment.objects.aggregate(
+        sum=Sum("InvestmentAmount")
+    )["sum"]
+
+    if ExtraInvestment is None:
+        ExtraInvestment = 0
 
     template = loader.get_template("index.html")
 
@@ -176,6 +182,7 @@ def index(request):
         "totalShareHolder": totalShareHolder,
         "totalShareNo": totalShareNo,
         "totalRegistrationAmount": totalRegistrationAmount,
+        "ExtraInvestment": ExtraInvestment,
         "current_month_received_shareholder_installment": current_month_received_shareholder_installment,
         "total_receivable_amount": total_receivable_amount,
         "totalAmountShareHolder": totalAmountShareHolder,
@@ -293,3 +300,15 @@ def SharePaymentCheckList(request):
         "SharePaymentCheckList.html",
         {"SharePaymentCheckList": SharePaymentCheckList},
     )
+
+
+def sExtraInvestment(request):
+    getExtraInvestment = ShareHolderExtraInvestment.objects.select_related(
+        "ShareHolder"
+    ).all()
+
+    template = loader.get_template("sExtraInvestment.html")
+    context = {
+        "myList": getExtraInvestment,
+    }
+    return HttpResponse(template.render(context, request))
