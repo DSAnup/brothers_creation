@@ -36,7 +36,7 @@
                                 </span>
                                 {% elif stu.DaysDiffrenetFromNow > 40 %}
                                 <span style="color:red">
-                                    {% CalculateInterest stu.LoanAmount 5 2 %} (two months plus due)
+                                    {% CalculateInterest stu.LoanAmount 5 2 %} (two months + current months)
                                 </span>
                                 {% else %}
                                 <span style="color:green">
@@ -55,12 +55,8 @@
                                 </span>
                                 {% else %}
                                 <span style="color:red; font-weight:10px">
-                                    Last Paid - {{stu.LastInstammentDate|date:"F"}}<br>
-                                    {% if stu.MarginDate %}
-                                    Next Pay Date is: {% AddDays stu.MarginDate %}
-                                    {% else %}
-                                    Next Pay Date is: {% AddDays stu.LoanGivenDate %}
-                                    {%endif%}
+                                    Last Payment - {{stu.LastInstammentDate}}<br>
+                                    Last Payment {{stu.DaysDiffrenetFromNow}} Days Ago
                                 </span>
                                 {% endif %}
                         </td>
