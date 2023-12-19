@@ -22,6 +22,9 @@ def CalculateInterest(LoanAmount, Percent, multiMonth=1):
 def AddDays(MarginDate):
     Year = MarginDate.year
     Month = MarginDate.month
+    if Month == 12:
+        Month = 0
+        Year = Year + 1
     NextMonth = calendar.month_name[Month + 1]
     Day = MarginDate.day
     return str(Day) + "-" + str(NextMonth) + "-" + str(Year)

@@ -1,75 +1,74 @@
-{% extends "master.html" %} 
+{% extends "master.html" %}
 {% block title %} Loan Payment Check List {% endblock %}
-{% block content %} 
+{% block content %}
 {% load custom_filter %}
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Loan Payment Check List</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Loaner</th>
-                            <th>Loan Given Date</th>
-                            <th>Last Installment Date</th>
-                            <th>Loan Amount</th>
-                            <th>Interest Pay</th>
-                            <th>Need To Pay</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for stu in LoanPaymentCheckList %}
-                            <tr>
-                                <td>{{stu.userName}}-000{{stu.id}}</td>
-                                <td>{{stu.LoanGivenDate}}</td>
-                                <td>{{stu.LastInstammentDate}}</td>
-                                <td>{{stu.LoanAmount}}</td>
-                                <td>{{stu.InterestPay}}</td>
-                                <td>
-                                    {% if stu.DaysDiffrenetFromNow > 30 and  stu.DaysDiffrenetFromNow <= 40 %}
-                                        <span style="color:red">
-                                            {% CalculateInterest stu.LoanAmount 4 %}
-                                        </span>
-                                    {% elif stu.DaysDiffrenetFromNow > 40 %}
-                                        <span style="color:red">
-                                            {% CalculateInterest stu.LoanAmount 5 2 %} (two months plus due)
-                                        </span>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Loan Payment Check List</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Loaner</th>
+                        <th>Loan Given Date</th>
+                        <th>Last Installment Date</th>
+                        <th>Loan Amount</th>
+                        <th>Interest Pay</th>
+                        <th>Need To Pay</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stu in LoanPaymentCheckList %}
+                    <tr>
+                        <td>{{stu.userName}}-000{{stu.id}}</td>
+                        <td>{{stu.LoanGivenDate}}</td>
+                        <td>{{stu.LastInstammentDate}}</td>
+                        <td>{{stu.LoanAmount}}</td>
+                        <td>{{stu.InterestPay}}</td>
+                        <td>
+                            {% if stu.DaysDiffrenetFromNow > 30 and stu.DaysDiffrenetFromNow <= 40 %} <span
+                                style="color:red">
+                                {% CalculateInterest stu.LoanAmount 4 %}
+                                </span>
+                                {% elif stu.DaysDiffrenetFromNow > 40 %}
+                                <span style="color:red">
+                                    {% CalculateInterest stu.LoanAmount 5 2 %} (two months plus due)
+                                </span>
+                                {% else %}
+                                <span style="color:green">
+                                    {{stu.InterestPay}}
+                                </span>
+                                {% endif %}
+                        </td>
+                        <td>
+                            {% if stu.DaysDiffrenetFromNow < 30 %} <span style="color:green; font-weight:10px">
+                                Paid till - {{stu.LastInstammentDate|date:"F"}}<br>
+                                {% if stu.MarginDate %}
+                                Next Pay Date is: {% AddDays stu.MarginDate %}
+                                {% else %}
+                                Next Pay Date is: {% AddDays stu.LoanGivenDate %}
+                                {%endif%}
+                                </span>
+                                {% else %}
+                                <span style="color:red; font-weight:10px">
+                                    Last Paid - {{stu.LastInstammentDate|date:"F"}}<br>
+                                    {% if stu.MarginDate %}
+                                    Next Pay Date is: {% AddDays stu.MarginDate %}
                                     {% else %}
-                                        <span style="color:green">
-                                            {{stu.InterestPay}}
-                                        </span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if stu.DaysDiffrenetFromNow < 30  %}
-                                        <span style="color:green; font-weight:10px">
-                                            Paid till - {{stu.LastInstammentDate|date:"F"}}<br>
-                                            {% if stu.MarginDate %}
-                                                Next Pay Date is:  {% AddDays stu.MarginDate %}
-                                            {% else %}
-                                                Next Pay Date is:  {% AddDays stu.LoanGivenDate %}
-                                            {%endif%}
-                                        </span>
-                                    {% else %}
-                                        <span style="color:red; font-weight:10px">
-                                            Last Paid - {{stu.LastInstammentDate|date:"F"}}<br>
-                                            {% if stu.MarginDate %}
-                                                Next Pay Date is:  {% AddDays stu.MarginDate %}
-                                            {% else %}
-                                                Next Pay Date is:  {% AddDays stu.LoanGivenDate %}
-                                            {%endif%}
-                                        </span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                                    Next Pay Date is: {% AddDays stu.LoanGivenDate %}
+                                    {%endif%}
+                                </span>
+                                {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 {% endblock %}
